@@ -1,0 +1,66 @@
+.community {
+	&__top {
+		padding: 1.2rem 4.5rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 1.2rem;
+
+		@include maxSize(S) {
+			padding: 1.2rem 2rem;
+		}
+	}
+	&__navigation {
+		display: flex;
+		gap: 1rem;
+	}
+	&__navigation-text {
+	}
+
+	&__tabs {
+		position: relative;
+		width: auto;
+		padding: 0.4rem;
+		display: flex;
+		gap: 1rem;
+		background-color: rgba($color-brand, 0.12);
+		border-radius: 1.2rem;
+
+		&::after {
+		}
+	}
+	&__tab {
+		width: 20rem;
+		// flex: 1 0 auto;
+		padding: 0.4rem;
+
+		cursor: pointer;
+		text-align: center;
+		z-index: 1;
+		&--doubble ~ .community__tabs::after {
+			left: 0;
+		}
+
+		&--community ~ .community__tabs::after {
+			left: 50%;
+		}
+	}
+
+	&__cta {
+		padding: 0.6rem 1.2rem;
+		background-color: $color-brand;
+		color: $color-white;
+		border-radius: 0.8rem;
+	}
+}
+.switch {
+	position: absolute;
+	width: 50%;
+	height: 80%;
+	top: 7.5%;
+	left: 0%;
+
+	background-color: $color-white;
+	font-family: "AvertaStd-SemiBold", Arial, Helvetica, sans-serif;
+	border-radius: 1.2rem;
+}

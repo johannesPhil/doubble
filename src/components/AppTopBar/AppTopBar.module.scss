@@ -1,0 +1,82 @@
+@import "../../scss/abstracts/mixins", "../../scss/abstracts/variables";
+
+.top {
+	width: 100%;
+	padding: 1rem;
+	display: flex;
+	justify-content: space-between;
+	border: solid 1px $color-gray-1;
+}
+
+.logo {
+	@include screenSize(S) {
+		content: url("/images/doubblePrimary.png");
+	}
+	@include screenSize(M) {
+		content: url("/images/doubblePrimary.png");
+	}
+
+	@include screenSize(L) {
+		content: url("/images/logo-full.svg");
+	}
+	@include screenSize(XL) {
+		content: url("/images/logo-full.svg");
+	}
+}
+.left,
+.right {
+	width: 50%;
+	display: flex;
+	align-items: center;
+
+	gap: 3.5rem;
+}
+.left {
+	justify-content: space-between;
+}
+.search {
+	min-width: 50%;
+	padding: 1.2rem;
+	display: flex;
+	gap: 1.5rem;
+	align-items: center;
+	border: solid 1px $color-gray-3;
+	border-radius: 0.8rem;
+	input {
+		width: 100%;
+		border: transparent;
+		outline: transparent;
+		color: rgba($color-text-dark-1, 0.7);
+		font-size: 1.2rem;
+
+		&::placeholder {
+			color: $color-gray-2;
+		}
+	}
+}
+.right {
+	justify-content: flex-end;
+}
+
+.cta {
+	padding: 0.8rem 1.6rem;
+	background-color: $color-brand;
+	font-size: 1.4rem;
+	color: $color-white;
+	border-radius: 0.8rem;
+
+	@include maxSize(S) {
+		height: 3.7rem;
+		padding: 0;
+		content: url("/images/plus-purple.png");
+		background-color: transparent;
+	}
+}
+.user {
+	display: flex;
+	gap: 2.4rem;
+}
+.options {
+	display: flex;
+	align-items: center;
+}

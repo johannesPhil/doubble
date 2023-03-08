@@ -1,0 +1,29 @@
+.side {
+	width: 100%;
+	padding: 0 3.2rem;
+	overflow: auto;
+	background-color: $color-white;
+
+	&__navigation {
+		padding: 2rem 0;
+		display: grid;
+		gap: 1rem;
+		font-size: 1.4rem;
+		color: $color-text-dark-2;
+	}
+
+	&__link {
+		padding: 1rem;
+		border-radius: 0.6rem;
+
+		&:hover {
+			background-color: rgba($color-brand, 0.2);
+			color: $color-brand;
+		}
+
+		&--active {
+			background-color: $color-brand;
+			color: $color-white;
+		}
+	}
+}

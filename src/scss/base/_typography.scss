@@ -1,0 +1,47 @@
+@font-face {
+	font-family: "AvertaStd-Regular";
+	src: local("AvertaStd-Regular"),
+		url("../fonts/avertastd-regular-webfont.woff") format("woff"),
+		url("../fonts/avertastd-regular-webfont.woff2") format("woff2"),
+		url("../fonts/AvertaStd-Regular.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "AvertaStd-SemiBold";
+	src: local("AvertaStd-SemiBold"),
+		url("../fonts/avertastd-semibold-webfont.woff") format("woff"),
+		url("../fonts/avertastd-semibold-webfont.woff2") format("woff2"),
+		url("../fonts/AvertaStd-Semibold.ttf") format("truetype");
+}
+@font-face {
+	font-family: "AvertaStd-Bold";
+	src: url("../fonts/avertastd-bold-webfont.woff") format("woff"),
+		url("../fonts/avertastd-bold-webfont.woff2") format(("woff2")),
+		url("../fonts/AvertaStd-Bold.ttf") format(("truetype"));
+}
+
+.heading {
+	font-family: "AvertaStd-SemiBold";
+	&__small {
+		font-size: 1.4rem;
+	}
+	&__medium {
+		font-size: 2rem;
+	}
+	&__large {
+		font-size: 3.2rem;
+	}
+}
+
+.subtitle {
+	font-family: "AvertaStd-SemiBold";
+
+	font-size: 1.4rem;
+	&__small {
+		font-size: 1.2rem;
+	}
+
+	&__faded {
+		color: ($color-text-dark-2, 0.65);
+	}
+}

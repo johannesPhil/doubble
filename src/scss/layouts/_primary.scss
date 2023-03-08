@@ -1,0 +1,12 @@
+.primary {
+	height: 100vh;
+	overflow-y: hidden;
+	&__view {
+		height: 100%;
+		display: grid;
+		grid-template-columns: 1fr 4fr;
+	}
+	&__content {
+		background-color: $color-gray-4;
+	}
+}

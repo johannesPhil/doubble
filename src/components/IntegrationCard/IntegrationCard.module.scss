@@ -1,0 +1,39 @@
+@import "../../scss/abstracts/variables";
+
+.card {
+	width: 20rem;
+	padding: 1.6rem;
+	display: grid;
+	gap: 0.8rem;
+	background-color: $color-gray-3;
+	border-radius: 0.8rem;
+	border: solid 1px rgba($color-gray-2, 0.2);
+}
+.name {
+	font-size: 1.4rem;
+	font-family: "AvertaStd-SemiBold";
+}
+.text {
+	font-size: 1.2rem;
+}
+.app {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.icon {
+}
+.status,
+.installed {
+	padding: 0.5rem 0.8rem;
+	text-transform: uppercase;
+	font-family: "AvertaStd-Bold";
+	color: $color-white;
+	border-radius: 0.4rem;
+}
+.status {
+	background-color: $color-gray-2;
+}
+.installed {
+	background-color: $color-brand;
+}

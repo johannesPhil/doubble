@@ -1,0 +1,18 @@
+.shared {
+	height: 96vh;
+	overflow-y: auto;
+	padding: 4rem 2rem;
+	display: grid;
+	gap: 2rem;
+	grid-auto-rows: min-content;
+	background-color: $color-gray-4;
+
+	&__heading {
+	}
+
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+		gap: 3rem;
+	}
+}

@@ -1,0 +1,27 @@
+@import "../../scss/abstracts/variables";
+
+.item_group {
+	padding: 2rem 1.5rem;
+	display: grid;
+	gap: 1rem;
+	background-color: $color-white;
+	border-radius: 0.8rem;
+	box-shadow: 0px 8px 24px -6px rgba($color-text-dark-2, 0.14);
+
+	& > div {
+		&:not(:last-child) {
+			border-bottom: solid 1px $color-gray-1;
+		}
+	}
+}
+.empty {
+	width: 90%;
+	margin: auto;
+	padding: 1rem;
+	text-align: center;
+	background: rgba($color-brand, 0.12);
+	font-size: 1.6rem;
+}
+.cta_text {
+	color: $color-green-2;
+}

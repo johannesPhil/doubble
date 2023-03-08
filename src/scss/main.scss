@@ -1,0 +1,19 @@
+$imagePath: "../../../public/images";
+
+//Modules
+@import "../components/AuthButton/AuthButton.module.scss",
+	"../components/AppTopBar/AppTopBar.module.scss",
+	"../components/MeetingListCard/MeetingListCard.module.scss",
+	"../components/ItemsContainer/ItemsContainer.module.scss",
+	"../components/TemplateCard/TemplateCard.module.scss",
+	"../components/IntegrationCard/IntegrationCard.module.scss",
+	"../components/Integrations/Integrations.module.scss",
+	"../components//ActionList/ActionList.module.scss",
+	"../components/ActionList/ActionList.module.scss",
+	"../components/ActionItemsGroup/ActionItemsGroup.module.scss";
+
+// 7-1 paradigm
+@import "abstracts/mixins", "abstracts/variables", "base/typography",
+	"base/base", "components/auth", "components/sidenav",
+	"components/integrations", "layouts/primary", "pages/landing",
+	"pages/welcome", "pages/actionitems", "pages/shared", "pages/community";

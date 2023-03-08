@@ -1,0 +1,62 @@
+@import "../../scss/abstracts/variables";
+
+.template {
+	display: grid;
+	gap: 2rem;
+}
+
+.name {
+	font-size: 1.4rem;
+	color: $color-text-dark-1;
+}
+
+.card {
+	position: relative;
+	height: 11rem;
+	width: 100%;
+	border-radius: 0.8rem;
+	overflow: hidden;
+}
+.overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	content: "";
+	background-color: rgba($color-text-dark-2, 0);
+	z-index: 2;
+	transition: all 500ms;
+}
+.cta {
+	position: absolute;
+	padding: 0.5rem 1.2rem;
+	background-color: $color-white;
+	color: $color-brand;
+	font-size: 1.4rem;
+	opacity: 0;
+	transition: all 500ms;
+	border-radius: 0.4rem;
+	cursor: pointer;
+}
+
+.cta:hover {
+	background-color: $color-brand;
+	color: $color-white;
+}
+
+.template:hover .overlay {
+	background-color: rgba($color-text-dark-2, 0.8);
+	height: 100%;
+	top: 0;
+}
+
+.template:hover .cta {
+	opacity: 1;
+}
+.image {
+	width: 100%;
+}

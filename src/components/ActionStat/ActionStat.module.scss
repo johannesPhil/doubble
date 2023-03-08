@@ -1,0 +1,44 @@
+@import "../../scss/abstracts/variables";
+
+.wrapper {
+	padding: 1.7rem;
+	border-radius: 0.8rem;
+	display: grid;
+	gap: 1rem;
+}
+.total_wrapper {
+	composes: wrapper;
+	background-color: rgba($color-red-1, 0.2);
+}
+.resolved_wrapper {
+	background-color: rgba($color-green-1, 0.2);
+}
+.unresolved_wrapper {
+	background-color: rgba($color-yellow-1, 0.2);
+}
+.icon {
+	width: 4rem;
+	height: 4rem;
+	padding: 1rem;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+}
+.total_icon {
+	composes: icon;
+	background-color: rgba($color-red-1, 1);
+}
+.resolved_icon {
+	composes: icon;
+	background-color: rgba($color-green-1, 1);
+}
+.unresolved_icon {
+	composes: icon;
+	background-color: rgba($color-yellow-1, 1);
+}
+.label {
+	font-size: 1.4rem;
+}
+.total_text {
+	font-size: 3rem;
+}
