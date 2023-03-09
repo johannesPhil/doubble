@@ -1,10 +1,14 @@
 .community {
-	&__top {
+	// display: grid;
+	// gap: 2rem;
+
+	&__topbar {
 		padding: 1.2rem 4.5rem;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		font-size: 1.2rem;
+		box-shadow: 0px 6px 6px -6px rgba(0, 0, 0, 0.16);
 
 		@include maxSize(S) {
 			padding: 1.2rem 2rem;
@@ -19,48 +23,165 @@
 
 	&__tabs {
 		position: relative;
-		width: auto;
+		width: max-content;
 		padding: 0.4rem;
 		display: flex;
 		gap: 1rem;
 		background-color: rgba($color-brand, 0.12);
 		border-radius: 1.2rem;
-
-		&::after {
-		}
 	}
 	&__tab {
 		width: 20rem;
+		white-space: nowrap;
 		// flex: 1 0 auto;
 		padding: 0.4rem;
 
 		cursor: pointer;
 		text-align: center;
 		z-index: 1;
-		&--doubble ~ .community__tabs::after {
-			left: 0;
-		}
 
-		&--community ~ .community__tabs::after {
-			left: 50%;
+		&--community {
+			content: "By Community, For Community";
 		}
 	}
 
 	&__cta {
-		padding: 0.6rem 1.2rem;
+		padding: 0.6rem 1.9rem;
 		background-color: $color-brand;
 		color: $color-white;
 		border-radius: 0.8rem;
 	}
+
+	&__templates {
+		height: 96vh;
+		overflow-y: auto;
+		padding: 5rem;
+		display: grid;
+		gap: 3rem;
+		background-color: $color-gray-3;
+		grid-auto-rows: min-content;
+
+		@include screenSize(S) {
+			padding: 2rem;
+		}
+	}
+
+	&__templates-top {
+		height: min-content;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	&__headings {
+		width: max-content;
+		display: inline-block;
+
+		& > * {
+			width: max-content;
+			margin: auto 0;
+		}
+	}
+	&__search {
+		height: 4rem;
+		min-width: 30%;
+		padding: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		border: solid 1px $color-gray-1;
+		background-color: $color-white;
+		border-radius: 0.4rem;
+
+		img {
+			height: 90%;
+		}
+
+		input {
+			height: 100%;
+			width: 100%;
+			border: transparent;
+			outline: none;
+		}
+	}
+
+	&__headings,
+	&__search {
+		@include screenSize(S) {
+			flex: 1 0 100%;
+		}
+	}
+
+	&__items {
+		height: min-content;
+		display: grid;
+		gap: 2rem;
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+	}
 }
 .switch {
 	position: absolute;
-	width: 50%;
+	width: 48%;
 	height: 80%;
 	top: 7.5%;
-	left: 0%;
-
 	background-color: $color-white;
 	font-family: "AvertaStd-SemiBold", Arial, Helvetica, sans-serif;
-	border-radius: 1.2rem;
+	border-radius: 0.8rem;
+	transition: left 200ms ease-in-out;
+
+	&__doubble {
+		left: 1%;
+	}
+
+	&__community {
+		left: 51%;
+	}
+}
+.templates {
+	&__top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	&__headings {
+		width: max-content;
+
+		& > * {
+			width: max-content;
+			margin: auto 0;
+		}
+	}
+	&__search {
+		height: 4rem;
+		min-width: 30%;
+		padding: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		border: solid 1px $color-gray-3;
+		border-radius: 0.4rem;
+
+		img {
+			height: 90%;
+		}
+
+		input {
+			height: 100%;
+			width: 100%;
+			border: transparent;
+			outline: none;
+		}
+	}
+
+	&__headings,
+	&__search {
+		@include screenSize(S) {
+			flex: 1 0 100%;
+		}
+	}
 }

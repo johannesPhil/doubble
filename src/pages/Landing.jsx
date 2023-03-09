@@ -19,7 +19,7 @@ const Landing = () => {
 				</div>
 				<ul className="navigation__links">
 					<Link
-						to="/"
+						to="/app"
 						className="navigation__link">
 						Products
 					</Link>

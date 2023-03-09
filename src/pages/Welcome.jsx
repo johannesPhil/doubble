@@ -1,4 +1,5 @@
 import React from "react";
+import BrowseTemplateCard from "../components/BrowseTemplatesCard/BrowseTemplateCard";
 import Integrations from "../components/Integrations/Integrations";
 import ItemsContainer from "../components/ItemsContainer/ItemsContainer";
 import MeetingListCard from "../components/MeetingListCard/MeetingListCard";
@@ -31,14 +32,7 @@ const Welcome = () => {
 						/>
 					))}
 
-					<div className="template">
-						<div className="template__card template__card--browse">
-							<span className="template__card--inner">
-								<span> Templates</span>
-							</span>
-						</div>
-						<p className="template__name">Browse All</p>
-					</div>
+					<BrowseTemplateCard />
 				</div>
 				<ItemsContainer />
 			</div>
