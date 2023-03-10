@@ -19,27 +19,27 @@ const Landing = () => {
 				</div>
 				<ul className="navigation__links">
 					<Link
-						to="/app"
+						to="app"
 						className="navigation__link">
 						Products
 					</Link>
 					<Link
-						to="/"
+						to="login"
 						className="navigation__link">
 						Integrations
 					</Link>
 					<Link
-						to="/"
+						to="app"
 						className="navigation__link">
 						Templates
 					</Link>
 					<Link
-						to="/"
+						to=""
 						className="navigation__link">
 						Pricing
 					</Link>
 					<Link
-						to="/"
+						to=""
 						className="navigation__link">
 						Company
 					</Link>
