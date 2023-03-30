@@ -1,0 +1,23 @@
+@import "../../../scss/abstracts/variables";
+
+.container {
+	padding: 0.9rem 1.6rem;
+	display: grid;
+	gap: 0.5rem;
+	font-size: 1.2rem;
+	border-bottom: solid 1px $color-gray-1;
+}
+.tag {
+	color: $color-brand;
+}
+.meta {
+	display: flex;
+	justify-content: space-between;
+	font-size: 0.8rem;
+}
+.text {
+	color: rgba($color-text-dark-2, 0.46);
+}
+.author {
+	color: $color-red-2;
+}

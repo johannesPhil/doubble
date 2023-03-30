@@ -1,7 +1,12 @@
 import React from "react";
 import AuthButton from "../components/AuthButton/AuthButton";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const SignUp = () => {
+	const signUp = useGoogleLogin({
+		onSuccess: (response) => console.log(response),
+	});
+
 	return (
 		<div className="auth">
 			<div className="auth__main">
@@ -19,15 +24,14 @@ const SignUp = () => {
 				</div>
 				<div className="auth__methods">
 					<AuthButton
-						target={"google"}
-						text={"Sign up with Google"}
-						hover={false}
-					/>
-					<AuthButton
-						target={"microsoft"}
-						text={"Sign up with Microsoft"}
-						hover={true}
-					/>
+						handleClick={signUp}
+						target={"google"}>
+						<img
+							src={`/images/google.png`}
+							alt=""
+						/>
+						<span>Sign Up with Google</span>
+					</AuthButton>
 					<p className="">
 						No account? <span>Create one</span>
 					</p>

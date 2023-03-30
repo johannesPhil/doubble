@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import BrowseTemplateCard from "../components/BrowseTemplatesCard/BrowseTemplateCard";
 import Integrations from "../components/Integrations/Integrations";
 import ItemsContainer from "../components/ItemsContainer/ItemsContainer";
@@ -20,10 +21,12 @@ const Welcome = () => {
 					</p>
 				</div>
 				<div className="templates">
-					<div className="template">
+					<NavLink
+						to={"note"}
+						className="template">
 						<div className="template__card template__card--blank"></div>
 						<p className="template__name">Blank</p>
-					</div>
+					</NavLink>
 					{meetingTemplates.map((template, index) => (
 						<MeetingListCard
 							img={template.img}

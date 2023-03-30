@@ -1,0 +1,73 @@
+@import "../../../scss//abstracts/variables";
+
+.container {
+	width: 100%;
+	padding: 1.2rem 1rem;
+	display: grid;
+	gap: 0.5rem;
+	background-color: $color-gray-3;
+	border: solid 1px $color-gray-1;
+	border-radius: 0.8rem;
+	font-family: "AvertaStd-Regular";
+}
+.input {
+	width: 100%;
+	min-height: 8rem;
+	border: transparent;
+	background: transparent;
+	outline: none;
+	font-size: 1rem;
+	font-family: "AvertaStd-Regular";
+	resize: none;
+}
+.controls {
+	display: flex;
+	justify-content: space-between;
+}
+.controls_comment {
+	display: flex;
+	justify-content: end;
+}
+.tagInput {
+	width: 30%;
+	height: 2rem;
+	padding: 0.4rem;
+	border: transparent;
+	border-bottom: solid 1px rgba($color-gray-2, 0.4);
+	font-size: 1rem;
+	outline: none;
+	background-color: transparent;
+	color: $color-text-dark-1;
+	transition: all 300ms;
+
+	&:focus {
+		border-bottom: solid 1px rgba($color-brand, 0.5);
+	}
+}
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.tag {
+	padding: 0.2rem 0.5rem;
+	background-color: rgba($color-brand, 0.8);
+	color: $color-white;
+	border-radius: 0.3rem;
+
+	&:hover {
+		background-color: $color-gray-2;
+		// color: $color-text-dark-2;
+	}
+}
+
+.save {
+	font-size: 1.2rem;
+	padding: 0.4rem 1rem;
+	border: transparent;
+	background-color: rgba($color-text-dark-1, 0.9);
+	border-radius: 0.4rem;
+	color: $color-white;
+	cursor: pointer;
+}

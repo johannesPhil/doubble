@@ -1,0 +1,18 @@
+@import "../../../scss/abstracts/variables";
+
+.note {
+	padding: 1.3rem;
+	display: grid;
+	gap: 1rem;
+	border-bottom: solid 1px $color-gray-1;
+}
+.content {
+	font-size: 1.2rem;
+	color: rgba($color-text-dark-2, 0.45);
+}
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	color: $color-brand;
+}

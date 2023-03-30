@@ -5,10 +5,17 @@ import Community from "./pages/Community";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Meetings from "./pages/Meetings";
+import Session from "./pages/Session";
 import Sessions from "./pages/Sessions";
 import Shared from "./pages/Shared";
 import SignUp from "./pages/SignUp";
 import Welcome from "./pages/Welcome";
+
+/*TODO:
+1. Setup react redux state management 
+2. Create a Private Route component for protected routes
+
+*/
 
 export const routes = createBrowserRouter([
 	{
@@ -47,6 +54,10 @@ export const routes = createBrowserRouter([
 						element: <Shared />,
 					},
 				],
+			},
+			{
+				path: "session/:id?",
+				element: <Session />,
 			},
 			{
 				path: "meetings",

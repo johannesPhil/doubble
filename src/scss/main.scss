@@ -12,10 +12,15 @@ $imagePath: "../../../public/images";
 	"../components/ActionList/ActionList.module.scss",
 	"../components/ActionItemsGroup/ActionItemsGroup.module.scss",
 	"../components/BrowseTemplatesCard/BrowseTemplateCard.module.scss",
-	"../components/CommunityTemplates/CommunityTemplates.module.scss";
+	"../components/CommunityTemplates/CommunityTemplates.module.scss",
+	"../components/Sessions/SessionTopBar/SessionTopBar.module.scss",
+	"../components/Sessions/PrivateNote/Private.module.scss",
+	"../components/Sessions/TextField/TextField.module.scss",
+	"../components/Sessions/Comment/Comment.module.scss";
 
 // 7-1 paradigm
 @import "abstracts/mixins", "abstracts/variables", "base/typography",
 	"base/base", "components/auth", "components/sidenav",
 	"components/integrations", "layouts/primary", "pages/landing",
-	"pages/welcome", "pages/actionitems", "pages/shared", "pages/community";
+	"pages/welcome", "pages/actionitems", "pages/shared", "pages/community",
+	"pages/session", "vendors/editorjs";
