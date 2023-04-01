@@ -1,19 +1,33 @@
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useGoogleLogin } from "@react-oauth/google";
-import React from "react";
-import { Navigate } from "react-router-dom";
-import axiosInstance from "../../axios";
 import AuthButton from "../components/AuthButton/AuthButton";
+import { signIn } from "../Redux/actions/authActions";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Login = () => {
+export const Login = (props) => {
+	const navigate = useNavigate();
+
+	const location = useLocation();
+	const { from } = location.state;
+
+	const dispatch = useDispatch();
+	const {
+		auth: { isAuthenticated },
+	} = props;
+
 	const login = useGoogleLogin({
 		onSuccess: async (response) => {
-			let { data } = await axiosInstance.post(`auth/google`, {
-				access_token: response.access_token,
-			});
-
-			console.log(response, data);
+			dispatch(signIn(response.access_token));
 		},
 	});
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate(from || "/app");
+		}
+	}, [isAuthenticated]);
 
 	return (
 		<div className="auth">
@@ -53,4 +67,10 @@ const Login = () => {
 	);
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+});
+
+const mapDispatchToProps = { signIn };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
