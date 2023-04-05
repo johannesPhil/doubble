@@ -18,7 +18,7 @@ export const initialsImage = (size, name) => {
 	context.fillStyle = color;
 	context.textBaseline = "middle";
 	context.textAlign = "center";
-	context.font = `${size / 2}px sans`;
+	context.font = `${size / 2}px AvertaStd-Regular`;
 	context.fillText(initials, size / 2, size / 2);
 
 	return canvas.toDataURL();

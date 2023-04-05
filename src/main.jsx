@@ -10,8 +10,6 @@ import { Provider } from "react-redux";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { PersistGate } from "redux-persist/integration/react";
 
-const router = routes;
-
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<Provider store={store}>
 		<PersistGate persistor={persistor}>

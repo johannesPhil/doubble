@@ -1,31 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TemplateCard from "../TemplateCard/TemplateCard";
 import itemStyle from "./ItemsContainer.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { getSessions } from "../../Redux/actions/sessionActions";
+import { NavLink } from "react-router-dom";
 
 const ItemsContainer = () => {
-	const recent = [
-		// { name: "Cardily Meeting", resource: "Notes", accessed: "3 mins ago" },
-		// { name: "Retreat Meeting", resource: "Notes", accessed: "10 mins ago" },
-		// { name: "Retreat Meeting", resource: "Notes", accessed: "10 days ago" },
-		// {
-		// 	name: "Retreat Meeting",
-		// 	resource: "Notes",
-		// 	accessed: "10 weeks ago",
-		// },
-	];
+	const dispatch = useDispatch();
+	const { sessions } = useSelector((state) => state.sessions);
+
+	useEffect(() => {
+		dispatch(getSessions());
+		console.log(sessions);
+	}, []);
 
 	return (
 		<div className={itemStyle.container}>
 			<div className="heading">
 				<h1 className="heading heading__large">Recently Added</h1>
 			</div>
-			{recent.length ? (
+			{sessions ? (
 				<div className={itemStyle.items}>
-					{recent.map((data, index) => (
-						<TemplateCard
-							data={data}
-							key={index}
-						/>
+					{sessions.map((data, index) => (
+						<NavLink
+							to={`/app/session/${data.title}`}
+							key={data.title}>
+							<TemplateCard data={data} />
+						</NavLink>
 					))}
 				</div>
 			) : (

@@ -1,12 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import NoteEditor from "../components/Editor/NoteEditor";
 import Comment from "../components/Sessions/Comment/Comment";
 import PrivateNote from "../components/Sessions/PrivateNote/PrivateNote";
 import SessionTopBar from "../components/Sessions/SessionTopBar/SessionTopBar";
 import TextField from "../components/Sessions/TextField/TextField";
+import SessionOptions from "../components/Sessions/SessionOptions/SessionOptions";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	createSession,
+	getSession,
+	getSessions,
+} from "../Redux/actions/sessionActions";
 
 const Session = () => {
 	const [sessionTab, setSessionTab] = useState("note");
+	const dispatch = useDispatch();
+
+	const params = useParams();
+	const { id } = params;
+	const { sessions } = useSelector((state) => state.sessions);
 
 	const privateNotes = [
 		{
@@ -38,36 +51,114 @@ const Session = () => {
 		},
 	];
 
+	const [session, setSession] = useState({
+		title: "",
+		description: "",
+		time: "",
+		link: "",
+		note: "",
+	});
+
+	function handleSession(event) {
+		const { name, value } = event.target;
+		setSession({ ...session, [name]: value });
+	}
+
+	function handleNoteChange(noteData) {
+		setSession((prevState) => {
+			return { ...prevState, note: noteData };
+		});
+	}
+
+	function sendNote() {
+		dispatch(createSession(session));
+	}
+
+	useEffect(() => {
+		if (id) {
+			dispatch(getSessions());
+			dispatch(getSession(1));
+		}
+	}, [session]);
+
 	return (
 		<div className="session">
 			<SessionTopBar />
-			{/* <div className=""> */}
 			<div className="session__content">
 				<div className="session__meeting">
 					<div className="session__headings">
-						<h2 className="heading__medium">
-							Cardily Weekly Meeting
-						</h2>
-						<h3 className="heading__small">Description</h3>
+						<h2 className="heading__medium">{`${
+							session.title ? session.title : "Meeting title..."
+						}`}</h2>
+						<input
+							type="text"
+							name="description"
+							id="description"
+							placeholder="Description..."
+							className="session__desc"
+							onChange={handleSession}
+						/>
 					</div>
 					<div className="session__note">
 						<div className="session__itinerary">
 							<div className="session__itinerary-meeting">
-								<h3 className="heading__small">
-									Meeting Title
-								</h3>
-								<div className="session__spacetime">
-									<span className="session__time">
-										Time: 6:30pm - 7:30pm
-									</span>
-									<span className="session__space">
-										Join Google Meet
-									</span>
-								</div>
+								<input
+									type="text"
+									name="title"
+									id="title"
+									className="session__title"
+									placeholder="Enter meeting title..."
+									onChange={handleSession}
+								/>
+								{id ? (
+									<div className="session__spacetime">
+										<span className="session__time">
+											Time: 6:30pm - 7:30pm
+										</span>
+										<span className="session__space">
+											Join Google Meet
+										</span>
+									</div>
+								) : (
+									<div className="session__link">
+										<img
+											src={
+												session.link.includes("google")
+													? "/images/Google Meet.svg"
+													: session.link.includes(
+															"zoom"
+													  )
+													? "/images/zoom.svg"
+													: session.link.includes(
+															"microsoft"
+													  )
+													? "/images/microsoft teams.svg"
+													: "/images/link.svg"
+											}
+											alt="meeting host icon"
+											className="session__link-img"
+										/>
+										<input
+											type="text"
+											name="link"
+											id="link"
+											className="session__link-input"
+											placeholder="Enter meeting link..."
+											onChange={handleSession}
+										/>
+									</div>
+								)}
 							</div>
-							<div className="meta-right"></div>
+							<div className="meta-right">
+								<button
+									type="button"
+									className="session__send"
+									onClick={sendNote}>
+									Send Note
+								</button>
+							</div>
 						</div>
-						<NoteEditor />
+						<NoteEditor updateNote={handleNoteChange} />
 					</div>
 					<div className="control">
 						<span className="control__new">
@@ -95,62 +186,7 @@ const Session = () => {
 						</span>
 					</div>
 				</div>
-				<div className="session__tools">
-					<div className="tool">
-						<span className="tool__icon">
-							<img
-								src="/images/link.svg"
-								alt="merge"
-							/>
-						</span>
-						<span className="tool__name">Merge</span>
-					</div>
-					<div className="tool">
-						<span className="tool__icon">
-							<img
-								src="/images/Star.svg"
-								alt="toggle favourite"
-							/>
-						</span>
-						<span className="tool__name">Favourite</span>
-					</div>
-					<div className="tool">
-						<span className="tool__icon">
-							<img
-								src="/images/copy.svg"
-								alt="copy"
-							/>
-						</span>
-						<span className="tool__name">Copy</span>
-					</div>
-					<div className="tool">
-						<span className="tool__icon">
-							<img
-								src="/images/export.svg"
-								alt="export"
-							/>
-						</span>
-						<span className="tool__name">Export</span>
-					</div>
-					<div className="tool">
-						<span className="tool__icon">
-							<img
-								src="/images/save.svg"
-								alt="archive"
-							/>
-						</span>
-						<span className="tool__name">Archive</span>
-					</div>
-					<div className="tool">
-						<span className="tool__icon">
-							<img
-								src="/images/print.svg"
-								alt="print"
-							/>
-						</span>
-						<span className="tool__name">Print</span>
-					</div>
-				</div>
+				<SessionOptions />
 				<div className="session__side">
 					<div className="session__tabs">
 						<span

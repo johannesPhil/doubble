@@ -1,0 +1,32 @@
+@import "../../../scss/abstracts/variables";
+
+.tools {
+	display: grid;
+	gap: 3%;
+	grid-auto-rows: min-content;
+	transform: translateY(3%);
+}
+
+.tool {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	justify-content: center;
+	text-align: center;
+}
+
+.icon {
+	display: flex;
+	width: max-content;
+	text-align: center;
+	padding: 1rem;
+	border-radius: 50%;
+	background-color: $color-white;
+	box-shadow: 0px 12px 12px -6px rgba(0, 0, 0, 0.16),
+		0px 0px 1px rgba(0, 0, 0, 0.4);
+}
+
+.img {
+	width: 1.6rem;
+	height: 1.6rem;
+}

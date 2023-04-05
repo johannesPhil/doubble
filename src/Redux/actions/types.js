@@ -5,4 +5,8 @@ export const REQUEST_SUCCESS = "REQUEST_SUCCESS";
 export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
 export const SIGNIN_ERROR = "SIGNIN_ERROR";
 export const SIGN_OUT = "SIGN_OUT";
-// export const constantName = "constantName";
+export const CHECK_TOKEN_VALIDITY = "CHECK_TOKEN_VALIDITY";
+
+export const CREATE_SESSION_SUCCESS = "CREATE_SESSION_SUCCESS";
+export const CREATE_SESSION_ERROR = "CREATE_SESSION_ERROR";
+export const GET_SESSIONS_SUCCESS = "GET_SESSIONS_SUCCESS";

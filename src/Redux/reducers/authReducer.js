@@ -2,8 +2,10 @@ import * as actions from "../actions/types";
 import generalReducers from "./generalReducers";
 
 const initialState = {
-	user: {},
+	user: null,
 	isAuthenticated: false,
+	token: null,
+	tokenExpirationDate: null,
 };
 
 function authReducer(state = initialState, { type, payload }) {
@@ -12,7 +14,14 @@ function authReducer(state = initialState, { type, payload }) {
 			return {
 				...state,
 				isAuthenticated: true,
-				user: payload,
+				user: {
+					firstName: payload.decodedData.first_name,
+					lastName: payload.decodedData.last_name,
+					email: payload.decodedData.email,
+				},
+				token: payload.token,
+				tokenExpirationDate: new Date(payload.decodedData.exp * 1000),
+
 				loading: generalReducers(
 					state.loading,
 					actions.REQUEST_SUCCESS
@@ -27,7 +36,24 @@ function authReducer(state = initialState, { type, payload }) {
 			};
 
 		case actions.SIGN_OUT:
-			return { ...state, isAuthenticated: false, user: {} };
+			return {
+				...state,
+				isAuthenticated: false,
+				user: null,
+				token: null,
+				tokenExpirationDate: null,
+			};
+
+		case actions.CHECK_TOKEN_VALIDITY:
+			const currentTime = new Date();
+			return state.tokenExpirationDate < currentTime
+				? {
+						...state,
+						user: null,
+						isAuthenticated: false,
+						tokenExpirationDate: null,
+				  }
+				: state;
 
 		default:
 			return state;

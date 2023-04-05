@@ -22,7 +22,7 @@ const Welcome = () => {
 				</div>
 				<div className="templates">
 					<NavLink
-						to={"note"}
+						to={"session"}
 						className="template">
 						<div className="template__card template__card--blank"></div>
 						<p className="template__name">Blank</p>
