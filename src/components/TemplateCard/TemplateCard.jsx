@@ -17,7 +17,7 @@ const TemplateCard = ({ data }) => {
 			<div className={top}></div>
 			<div className={desc}>
 				<div className="">
-					<p className={name}>{data.name}</p>
+					<p className={name}>{data.title}</p>
 					<p className={meta}>
 						In{" "}
 						<span className={resource}>

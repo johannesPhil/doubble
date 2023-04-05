@@ -20,5 +20,39 @@
 
 .options {
 	display: flex;
-	gap: 1rem;
+	align-items: center;
+}
+.options > div {
+	padding: 0 2rem;
+	display: flex;
+	gap: 2rem;
+	justify-content: center;
+}
+.options > :nth-child(2) {
+	border-left: solid 1px $color-gray-2;
+}
+.options > :last-child {
+	padding: 0;
+}
+
+.options_icon {
+	width: 1.6rem;
+	height: 1.6rem;
+}
+
+.options_user {
+	display: flex;
+	gap: 2rem;
+}
+.options_img {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+}
+.options_share {
+	all: unset;
+	padding: 0.5rem 2rem;
+	background-color: $color-brand;
+	color: $color-white;
+	border-radius: 0.8rem;
 }

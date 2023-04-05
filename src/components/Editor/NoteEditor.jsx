@@ -1,5 +1,5 @@
 // import { Header } from "@editorjs/header";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
@@ -9,9 +9,9 @@ import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
 import SimpleImage from "@editorjs/simple-image";
 
-function NoteEditor() {
-	const [noteContent, setNoteContent] = useState(null);
-	const [editor, setEditor] = useState("");
+function NoteEditor({ updateNote }) {
+	const [noteContent, setNoteContent] = useState({});
+	const editorRef = useRef(null);
 
 	const editorConfig = {
 		holder: "note",
@@ -24,32 +24,52 @@ function NoteEditor() {
 				config: {
 					placeholder: "Enter a heading",
 					levels: [1, 2, 3, 4, 5, 6],
-					defaultLevel: 1,
+					defaultLevel: 2,
 				},
 			},
 			link: {
 				class: LinkTool,
 				inlineToolbar: true,
 				config: {
-					placeholder: "ENter Heading",
+					placeholder: "Paste a URL link",
 				},
+			},
+			checklist: {
+				class: Checklist,
+				inlineToolbar: true,
+				config: { placeholder: "Add Task" },
+			},
+			list: {
+				class: List,
+				inlineToolbar: true,
+			},
+			table: {
+				class: Table,
+				inlineToolbar: true,
 			},
 		},
 		data: noteContent,
+		onChange: async () => {
+			const editorContent = await editorRef.current.save();
+			updateNote(editorContent);
+		},
 	};
 
-	let coderDiv = document.querySelector("codex-editor__redactor");
+	function instantiateEditor() {
+		editorRef.current = new EditorJS({
+			...editorConfig,
+			logLevel: "WARN",
+		});
+	}
 
 	useEffect(() => {
-		editor === "" &&
-			setEditor(
-				() =>
-					new EditorJS({
-						...editorConfig,
-						logLevel: "VERBOSE",
-					})
-			);
-	}, []);
+		instantiateEditor();
+		return () => {
+			if (editorRef.current) {
+				editorRef.current.destroy();
+			}
+		};
+	}, [noteContent]);
 
 	return <div id="note"></div>;
 }
