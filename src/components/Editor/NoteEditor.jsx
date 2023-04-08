@@ -10,8 +10,69 @@ import List from "@editorjs/list";
 import SimpleImage from "@editorjs/simple-image";
 
 function NoteEditor({ updateNote }) {
-	const [noteContent, setNoteContent] = useState({});
 	const editorRef = useRef(null);
+
+	const defaultContent = {
+		blocks: [
+			{
+				type: "header",
+				data: {
+					text: "In Progress",
+					level: 3,
+				},
+			},
+			{
+				type: "paragraph",
+				data: {
+					text: "What I'm working on",
+				},
+			},
+			{
+				type: "checklist",
+				data: {
+					items: [{ text: "New Item", checked: true }],
+				},
+			},
+			{
+				type: "header",
+				data: {
+					text: "In Progress",
+					level: 3,
+				},
+			},
+			{
+				type: "paragraph",
+				data: {
+					text: "What I'm working on",
+				},
+			},
+			{
+				type: "checklist",
+				data: {
+					items: [{ text: "New Item", checked: false }],
+				},
+			},
+			{
+				type: "header",
+				data: {
+					text: "In Progress",
+					level: 3,
+				},
+			},
+			{
+				type: "paragraph",
+				data: {
+					text: "What I'm working on",
+				},
+			},
+			{
+				type: "checklist",
+				data: {
+					items: [{ text: "New Item", checked: false }],
+				},
+			},
+		],
+	};
 
 	const editorConfig = {
 		holder: "note",
@@ -48,7 +109,7 @@ function NoteEditor({ updateNote }) {
 				inlineToolbar: true,
 			},
 		},
-		data: noteContent,
+		data: defaultContent,
 		onChange: async () => {
 			const editorContent = await editorRef.current.save();
 			updateNote(editorContent);
@@ -69,7 +130,7 @@ function NoteEditor({ updateNote }) {
 				editorRef.current.destroy();
 			}
 		};
-	}, [noteContent]);
+	}, []);
 
 	return <div id="note"></div>;
 }
