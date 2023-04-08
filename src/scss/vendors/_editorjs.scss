@@ -1,6 +1,9 @@
 .codex-editor__redactor {
 	padding: 0 !important;
 }
-// .ce-block__content {
-// 	margin: 0 0rem !important;
-// }
+.ce-block__content,
+.ce-toolbar__content {
+	position: relative;
+	max-width: 100% !important;
+	margin: 0 6rem;
+}
