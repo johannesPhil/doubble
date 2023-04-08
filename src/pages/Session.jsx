@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import NoteEditor from "../components/Editor/NoteEditor";
-import Comment from "../components/Sessions/Comment/Comment";
-import PrivateNote from "../components/Sessions/PrivateNote/PrivateNote";
 import SessionTopBar from "../components/Sessions/SessionTopBar/SessionTopBar";
-import TextField from "../components/Sessions/TextField/TextField";
 import SessionOptions from "../components/Sessions/SessionOptions/SessionOptions";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,44 +9,15 @@ import {
 	getSession,
 	getSessions,
 } from "../Redux/actions/sessionActions";
+import SessionSide from "../components/Sessions/SessionSide/SessionSide";
+import NoteTemplateList from "../components/Sessions/NoteTemplateList/NoteTemplateList";
 
 const Session = () => {
-	const [sessionTab, setSessionTab] = useState("note");
 	const dispatch = useDispatch();
 
 	const params = useParams();
 	const { id } = params;
 	const { sessions } = useSelector((state) => state.sessions);
-
-	const privateNotes = [
-		{
-			text: "Keep Double close at hand with our Google Meet app.",
-			tags: ["#Products&Pixel"],
-		},
-		{
-			text: "Something great is coming out of this",
-			tags: ["optimism", "positive"],
-		},
-		{
-			text: "Town hall different from bala blue, you know",
-			tags: ["myturn", "amazing"],
-		},
-	];
-
-	const comments = [
-		{
-			text: "The timeline would have to be shifted",
-			author: "moyinoluwa",
-			time: "2012-01-26T13:51:50.417-07:00",
-			tags: [],
-		},
-		{
-			text: "Bring me back from the darkness, the dead back to life. Revive my soul, let it come alive",
-			author: "Moi",
-			time: "",
-			tags: [],
-		},
-	];
 
 	const [session, setSession] = useState({
 		title: "",
@@ -75,10 +43,11 @@ const Session = () => {
 	}
 
 	useEffect(() => {
-		if (id) {
-			dispatch(getSessions());
-			dispatch(getSession(1));
-		}
+		// if (id) {
+		// 	dispatch(getSessions());
+		// 	dispatch(getSession(1));
+		// }
+		console.log(session);
 	}, [session]);
 
 	return (
@@ -158,7 +127,10 @@ const Session = () => {
 								</button>
 							</div>
 						</div>
-						<NoteEditor updateNote={handleNoteChange} />
+						<div className="note-template">
+							<NoteEditor updateNote={handleNoteChange} />
+							<NoteTemplateList />
+						</div>
 					</div>
 					<div className="control">
 						<span className="control__new">
@@ -187,84 +159,7 @@ const Session = () => {
 					</div>
 				</div>
 				<SessionOptions />
-				<div className="session__side">
-					<div className="session__tabs">
-						<span
-							className="session__tab"
-							onClick={() => setSessionTab("note")}>
-							Private Note
-						</span>
-						<span
-							className="session__tab"
-							onClick={() => setSessionTab("comments")}>
-							Comments
-						</span>
-						<span
-							className="session__tab"
-							onClick={() => setSessionTab("okr")}>
-							OKRs
-						</span>
-						<span
-							className={`session__switch session__switch--${sessionTab}`}></span>
-					</div>
-					<div className="session__tabviews">
-						<div
-							className={`session__tabview ${
-								sessionTab == "note"
-									? "session__tabview--active"
-									: ""
-							}`}>
-							<TextField type={"note"} />
-							{privateNotes.length
-								? privateNotes.map((note) => (
-										<PrivateNote
-											note={note}
-											key={note.text}
-										/>
-								  ))
-								: null}
-						</div>
-						<div
-							className={`session__tabview ${
-								sessionTab == "comments"
-									? "session__tabview--active"
-									: ""
-							}`}>
-							<TextField type={"comment"} />
-							{comments.length
-								? comments.map((comment) => (
-										<Comment
-											comment={comment}
-											key={comment.text}
-										/>
-								  ))
-								: null}
-						</div>
-						<div
-							className={`session__tabview ${
-								sessionTab == "okr"
-									? "session__tabview--active"
-									: ""
-							}`}>
-							<p className="okr-heading">
-								Objectives and Key Result
-							</p>
-							<div className="okr-placeholder">
-								<img
-									src="/images/woman studying.svg"
-									alt="illustration"
-									className="okr-placeholder__image"
-								/>
-								<h3>No OKR has been created</h3>
-								<p>
-									Start creating new objective and key result
-									to help your productivity
-								</p>
-								<span className="okr-cta">New OKR</span>
-							</div>
-						</div>
-					</div>
-				</div>
+				<SessionSide />
 			</div>
 			{/* </div> */}
 		</div>
