@@ -11,36 +11,49 @@ import {
 } from "../Redux/actions/sessionActions";
 import SessionSide from "../components/Sessions/SessionSide/SessionSide";
 import NoteTemplateList from "../components/Sessions/NoteTemplateList/NoteTemplateList";
+import NoteOptionsModal from "../components/NoteOptionsModal";
+import { useCloseModals } from "../utils/closeModals";
+import ShareModal from "../components/ShareModal";
 
 const Session = () => {
 	const dispatch = useDispatch();
+	const [share, setShare] = useState(false);
+	const [options, setOptions] = useState(false);
+	const [expand, setExpand] = useState(false);
 
 	const params = useParams();
 	const { id } = params;
 	const { sessions } = useSelector((state) => state.sessions);
 
-	const [session, setSession] = useState({
-		title: "",
-		description: "",
-		time: "",
-		link: "",
-		note: "",
+	const [session, setSession] = useState({ sessionTitle: "" });
+
+	const [note, setNote] = useState({
+		noteTitle: "",
+		noteContent: "",
 	});
+
+	const { modalRef } = useCloseModals(setExpand);
+
+	function handleNote(event) {
+		const { name, value } = event.target;
+		setNote({ ...note, [name]: value });
+	}
 
 	function handleSession(event) {
 		const { name, value } = event.target;
-		setSession({ ...session, [name]: value });
+		setSession({ sessionTitle: value });
 	}
 
-	function handleNoteChange(noteData) {
-		setSession((prevState) => {
-			return { ...prevState, note: noteData };
+	function handleNoteContent(noteData) {
+		setNote((prevState) => {
+			return { ...prevState, noteContent: noteData };
 		});
 	}
 
 	function sendNote() {
 		dispatch(createSession(session));
 	}
+	function toggleOptionVisibility() {}
 
 	useEffect(() => {
 		// if (id) {
@@ -48,38 +61,48 @@ const Session = () => {
 		// 	dispatch(getSession(1));
 		// }
 		console.log(session);
-	}, [session]);
+		console.log(note);
+	}, [session, note, expand]);
 
 	return (
-		<div className="session">
+		<div className={`session ${expand ? "session__expand" : ""} `}>
 			<SessionTopBar />
 			<div className="session__content">
 				<div className="session__meeting">
 					<div className="session__headings">
-						<h2 className="heading__medium">{`${
-							session.title ? session.title : "Meeting title..."
-						}`}</h2>
 						<input
+							type="text"
+							name="sessionTitle"
+							id="sessionTitle"
+							className="session__title"
+							placeholder="Session title..."
+							onChange={handleSession}
+						/>
+						{/* <input
 							type="text"
 							name="description"
 							id="description"
 							placeholder="Description..."
 							className="session__desc"
 							onChange={handleSession}
-						/>
+						/> */}
 					</div>
-					<div className="session__note">
+					<div
+						className={`session__note ${
+							expand ? "session__note--expand" : ""
+						}`}
+						ref={expand ? modalRef : null}>
 						<div className="session__itinerary">
 							<div className="session__itinerary-meeting">
 								<input
 									type="text"
-									name="title"
-									id="title"
-									className="session__title"
-									placeholder="Enter meeting title..."
-									onChange={handleSession}
+									name="noteTitle"
+									id="noteTitle"
+									className="session__link-input"
+									placeholder="Note title..."
+									onChange={handleNote}
 								/>
-								{id ? (
+								{/* {id ? (
 									<div className="session__spacetime">
 										<span className="session__time">
 											Time: 6:30pm - 7:30pm
@@ -116,19 +139,69 @@ const Session = () => {
 											onChange={handleSession}
 										/>
 									</div>
-								)}
+								)} */}
 							</div>
-							<div className="meta-right">
+							<div className="session__actions">
+								<div className="share">
+									<button
+										className="share__new"
+										type="button"
+										onClick={() => setShare(!share)}>
+										<img
+											src="/images/plus-white.svg"
+											alt=""
+										/>
+									</button>
+									{/* <div className="share__users">
+										<img
+											src="/images/Avatar.svg"
+											alt=""
+											className="share__user"
+										/>
+										<img
+											src="/images/Avatar.svg"
+											alt=""
+											className="share__user"
+										/>
+										<img
+											src="/images/Avatar.svg"
+											alt=""
+											className="share__user"
+										/>
+									</div> */}
+								</div>
 								<button
 									type="button"
 									className="session__send"
 									onClick={sendNote}>
 									Send Note
 								</button>
+								<img
+									src="/images/ellipsis.svg"
+									alt=""
+									className="session__options"
+									onClick={() => setOptions(!options)}
+								/>
+								{options ? (
+									<NoteOptionsModal
+										toggleVisibility={setOptions}
+										expand={expand}
+										setExpand={setExpand}
+									/>
+								) : null}
+								{share ? (
+									<ShareModal toggleVisibility={setShare} />
+								) : null}
 							</div>
 						</div>
-						<div className="note-template">
-							<NoteEditor updateNote={handleNoteChange} />
+						<div
+							className={`note-template ${
+								expand ? "note-template__expanded" : ""
+							}`}>
+							<NoteEditor
+								updateNote={handleNoteContent}
+								expand={expand}
+							/>
 							<NoteTemplateList />
 						</div>
 					</div>

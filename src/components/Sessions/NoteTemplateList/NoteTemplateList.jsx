@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./NoteTemplateList.module.scss";
 
 const NoteTemplateList = () => {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.templates}>
-				<h3 className={`heading__small ${styles.heading}`}>
+				<h3 className={`heading__small ${styles.templates_heading}`}>
 					Browse Templates
 				</h3>
 				<div className={styles.template}>

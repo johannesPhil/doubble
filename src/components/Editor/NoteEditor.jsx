@@ -9,7 +9,7 @@ import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
 import SimpleImage from "@editorjs/simple-image";
 
-function NoteEditor({ updateNote }) {
+function NoteEditor({ expand, updateNote }) {
 	const editorRef = useRef(null);
 
 	const defaultContent = {

@@ -1,8 +1,22 @@
 .session {
+	position: relative;
 	height: 100vh;
 
 	overflow: hidden;
 	background-color: $color-gray-1;
+
+	&__expand {
+		&::before {
+			top: 0;
+			content: "";
+			display: block;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			background-color: rgba($color-text-dark-1, 0.97);
+			z-index: 2;
+		}
+	}
 
 	&__headings {
 		display: grid;
@@ -12,10 +26,10 @@
 	&__title {
 		all: unset;
 		position: relative;
-		font-size: 1.3rem;
+		font-size: 2rem;
 
 		&::placeholder {
-			color: rgba($color-brand, 0.5);
+			color: rgba($color-text-dark-2, 0.8);
 		}
 	}
 
@@ -43,16 +57,6 @@
 	&__desc {
 		all: unset;
 		font-size: 1.2rem;
-	}
-
-	&__send {
-		all: unset;
-		padding: 1rem 2rem;
-		color: $color-white;
-		background-color: $color-green-2;
-		font-size: 1.4rem;
-		border-radius: 0.8rem;
-		font-weight: bolder;
 	}
 
 	&__content {
@@ -84,11 +88,24 @@
 		border-radius: 8px;
 		padding: 2rem 1rem;
 		background-color: $color-white;
+		transition: all 200ms;
+
+		&--expand {
+			position: absolute;
+			width: 70%;
+			height: auto;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			// background-color: rgba($color-text-dark-1, 0.5);
+			z-index: 4;
+		}
 	}
 
 	&__itinerary {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		padding-bottom: 0.8rem;
 		border-bottom: solid 1px $color-gray-3;
 
@@ -110,6 +127,27 @@
 		background-color: rgba($color-brand, 0.2);
 		color: rgba($color-text-dark-1, 0.8);
 		border-radius: 0.5rem;
+	}
+
+	&__actions {
+		position: relative;
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	&__options {
+		cursor: pointer;
+	}
+
+	&__send {
+		padding: 1rem 2rem;
+		color: $color-white;
+		background-color: $color-green-2;
+		font-size: 1.4rem;
+		border: none;
+		border-radius: 0.8rem;
+		font-weight: bolder;
 	}
 
 	&__side {
@@ -181,17 +219,51 @@
 	}
 }
 
+.share {
+	display: flex;
+	&__new {
+		display: flex;
+		padding: 0.5rem;
+		border-radius: 50%;
+		border: none;
+		background-color: $color-brand;
+		z-index: 1;
+	}
+
+	&__users {
+		display: flex;
+	}
+
+	&__user {
+		transform: translateX(-5px);
+		width: 2.5rem;
+		height: 2.5rem;
+		border: solid 1px #4e46b4;
+		border-radius: 50%;
+
+		&:not(:first-child) {
+			margin-left: -1rem;
+		}
+	}
+}
+
 #note {
 	width: 100%;
-	height: 40vh;
+	height: 100%;
 	overflow-y: auto;
 	font-size: 1.2rem;
 }
 
 .note-template {
+	height: 40vh;
 	display: grid;
 	grid-template-columns: 4fr 1fr;
 	gap: 1rem;
+
+	&__expanded {
+		height: 60vh;
+		max-height: 75vh;
+	}
 }
 
 .control {
@@ -283,4 +355,7 @@
 	p {
 		color: rgba($color-text-dark-2, 0.46);
 	}
+}
+button {
+	cursor: pointer;
 }
