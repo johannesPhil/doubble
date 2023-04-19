@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import TemplateCard from "../TemplateCard/TemplateCard";
 import itemStyle from "./ItemsContainer.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getSessions } from "../../Redux/actions/sessionActions";
+import {
+	getSessionsByUser,
+	getSessions,
+} from "../../Redux/actions/sessionActions";
 import { NavLink } from "react-router-dom";
 
 const ItemsContainer = () => {
@@ -10,8 +13,7 @@ const ItemsContainer = () => {
 	const { sessions } = useSelector((state) => state.sessions);
 
 	useEffect(() => {
-		dispatch(getSessions());
-		console.log(sessions);
+		dispatch(getSessionsByUser());
 	}, []);
 
 	return (
@@ -21,11 +23,11 @@ const ItemsContainer = () => {
 			</div>
 			{sessions ? (
 				<div className={itemStyle.items}>
-					{sessions.map((data, index) => (
+					{sessions.map((session) => (
 						<NavLink
-							to={`/app/session/${data.title}`}
-							key={data.title}>
-							<TemplateCard data={data} />
+							to={`/app/session/${session.id}`}
+							key={session.id}>
+							<TemplateCard data={session} />
 						</NavLink>
 					))}
 				</div>

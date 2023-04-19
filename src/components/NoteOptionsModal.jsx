@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useCloseModals } from "../utils/closeModals";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteNote } from "../Redux/actions/sessionActions";
 
 const OptionList = styled.ul`
 	position: absolute;
@@ -29,8 +31,9 @@ const OptionItem = styled.li`
 	}
 `;
 
-function NoteOptionsModal({ expand, toggleVisibility, setExpand }) {
+function NoteOptionsModal({ expand, toggleVisibility, setExpand, id: noteId }) {
 	const { modalRef } = useCloseModals(toggleVisibility);
+	const dispatch = useDispatch();
 
 	function fillScreen() {
 		toggleVisibility(false);
@@ -67,7 +70,7 @@ function NoteOptionsModal({ expand, toggleVisibility, setExpand }) {
 				/>
 				<span>Lock note</span>
 			</OptionItem>
-			<OptionItem>
+			<OptionItem onClick={() => dispatch(deleteNote(noteId))}>
 				<img
 					src="/images/delete.svg"
 					alt=""

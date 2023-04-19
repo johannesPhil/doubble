@@ -1,19 +1,19 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useMatch } from "react-router-dom";
 
 const SideNav = () => {
+	const isMatch = useMatch("/app");
 	return (
 		<div className="side">
 			<nav className="side__navigation">
 				<NavLink
-					to="./"
-					className={({ isActive, isPending }) => {
-						return isActive
-							? "side__link side__link--active"
-							: isPending
-							? " side__link--pending"
-							: " side__link";
-					}}>
+					to="/app"
+					className={`${
+						isMatch
+							? "side__link side__link--active "
+							: "side__link--pending"
+					} side__link
+					`}>
 					<span className="side__icon side__icon--home"></span>
 					<span className="side__test">Welcome</span>
 				</NavLink>
