@@ -1,0 +1,37 @@
+@import "../../../scss/abstracts/variables";
+
+.wrapper {
+	position: relative;
+	height: 100%;
+	width: auto;
+	overflow-y: auto;
+	padding: 1rem;
+	background-color: $color-gray-1;
+	border-radius: 0.8rem;
+}
+
+.templates {
+	display: grid;
+	gap: 1rem;
+}
+.templates_heading {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	color: $color-text-dark-1;
+}
+
+.template {
+	width: 100%;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	font-size: 1.2rem;
+}
+
+.template_heading {
+	font-size: 1.4rem;
+	// font-family: "";
+}
+.template_desc {
+	color: $color-gray-2;
+}

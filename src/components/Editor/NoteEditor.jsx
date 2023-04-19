@@ -8,15 +8,21 @@ import Table from "@editorjs/table";
 import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
 import SimpleImage from "@editorjs/simple-image";
+import { useParams } from "react-router-dom";
+import { defaultBlocks } from "../../utils/editor";
+import { useDispatch } from "react-redux";
+import { editNote } from "../../Redux/actions/sessionActions";
 
-function NoteEditor({ updateNote }) {
-	const [noteContent, setNoteContent] = useState({});
+function NoteEditor({ data, id: noteId }) {
 	const editorRef = useRef(null);
+	const editorContent = data ? JSON.parse(data) : null;
+	const { id: sessionId } = useParams();
+
+	const dispatch = useDispatch();
 
 	const editorConfig = {
-		holder: "note",
-		placeholder: "Get started",
-		// defaultBlock: { class: Header },
+		holder: `note${noteId ? noteId : "-new"}`,
+		placeholder: "Get started here",
 		tools: {
 			header: {
 				class: Header,
@@ -48,10 +54,10 @@ function NoteEditor({ updateNote }) {
 				inlineToolbar: true,
 			},
 		},
-		data: noteContent,
+		data: editorContent ? editorContent : defaultBlocks,
 		onChange: async () => {
 			const editorContent = await editorRef.current.save();
-			updateNote(editorContent);
+			dispatch(editNote(noteId, editorContent, "body"));
 		},
 	};
 
@@ -69,9 +75,11 @@ function NoteEditor({ updateNote }) {
 				editorRef.current.destroy();
 			}
 		};
-	}, [noteContent]);
+	}, []);
 
-	return <div id="note"></div>;
+	useEffect(() => {}, [dispatch, editorContent, noteId]);
+
+	return <div id={`note${noteId ? noteId : "-new"}`}></div>;
 }
 
 export default NoteEditor;
