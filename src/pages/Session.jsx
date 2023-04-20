@@ -134,7 +134,7 @@ const Session = () => {
 						/>
 					) : null} */}
 
-					<NoteControls />
+					{sessionId && <NoteControls />}
 				</div>
 				<SessionOptions />
 				<SessionSide />
