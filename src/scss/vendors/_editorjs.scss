@@ -1,5 +1,10 @@
 .codex-editor__redactor {
 	padding: 0 !important;
+
+	.ce-header:not(:first-of-type) {
+		font-size: 3rem;
+		padding: 4rem 0 0 0 !important;
+	}
 }
 .ce-block__content,
 .ce-toolbar__content {
@@ -7,3 +12,32 @@
 	max-width: 100% !important;
 	margin: 0 6rem;
 }
+
+.ce-paragraph {
+	font-size: 1.4rem;
+	color: rgba($color-text-dark-1, 0.65);
+}
+.cdx-checklist__item {
+	align-items: center;
+}
+
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn {
+	color: rgba($color-text-dark-1, 0.5) !important;
+}
+
+.ce-block__content:has(.ce-header) {
+	margin-top: 3rem !important;
+}
+
+// /* select all ce-block__content elements */
+// .ce-block__content {
+// 	/* apply margin-top to all elements */
+// 	margin-top: 3rem;
+// }
+
+// /* select the first .ce-block__content that has a child .ce-header */
+// .ce-block__content:first-of-type:has(.ce-header) {
+// 	/* remove margin-top from the first element */
+// 	margin-top: 0 !important;
+// }

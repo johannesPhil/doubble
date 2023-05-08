@@ -2,6 +2,8 @@ import axiosInstance from "../../../axios";
 import { confirmParse } from "../../utils/editorBodyParser";
 import { loadRequest } from "./generalActions";
 import {
+	CREATE_NOTE_SUCCESS,
+	CREATE_NOTE_ERROR,
 	START_NEW_NOTE,
 	CANCEL_START_NEW_NOTE,
 	EDIT_NEW_NOTE,
@@ -14,12 +16,29 @@ import {
 	ADD_NOTE_SUCCESS,
 	ADD_NOTE_ERROR,
 	DELETE_NOTE_SUCCESS,
+	UPDATE_SESSION_SUCCESS,
 } from "./types";
 import {
 	CREATE_SESSION_SUCCESS,
 	GET_SESSIONS_SUCCESS,
 	REQUEST_ERROR,
 } from "./types";
+
+export const createSessionWithTitle = (title) => (dispatch) => {
+	dispatch(loadRequest());
+	axiosInstance
+		.post(`sections`, { title })
+		.then((response) => {
+			const sessionId = response.data.data.id;
+			dispatch({
+				type: CREATE_SESSION_SUCCESS,
+				payload: sessionId,
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};
 
 export const createSessionWithNote =
 	(session, note) => async (dispatch, getState) => {
@@ -28,7 +47,6 @@ export const createSessionWithNote =
 		const {
 			session: { title, notes },
 		} = sessions;
-		console.log(title, notes);
 		const sessionResponse = await axiosInstance
 			.post("sections", { title })
 			.then((response) => {
@@ -48,27 +66,77 @@ export const createSessionWithNote =
 			});
 	};
 
-export const createNoteWithSession = (note, sessionId) => async (dispatch) => {
-	axiosInstance
-		.post("notes", {
-			title: note.title,
-			body: confirmParse(note.body),
-			section_id: sessionId,
-		})
-		.then((response) => {
-			console.log(response.data);
-			dispatch({
-				type: ADD_NOTE_SUCCESS,
-				payload: response.data.data,
-			});
-		})
-		.catch((error) => {
-			dispatch({
-				type: ADD_NOTE_ERROR,
-				payload: error.message,
-			});
-		});
+export const updateSession = (id, title) => {
+	return (dispatch) => {
+		axiosInstance
+			.put(`sections/${id}`, { title })
+			.then((response) => {
+				dispatch({
+					type: UPDATE_SESSION_SUCCESS,
+				});
+			})
+			.catch((error) => {});
+	};
 };
+
+export const createNoteWithoutSession = (note = null) => {
+	return (dispatch, getState) => {
+		dispatch(loadRequest());
+		let newNote;
+		const {
+			sessions: { session },
+		} = getState();
+
+		newNote = session.notes[0];
+
+		axiosInstance
+			.post("notes", {
+				title: newNote.title,
+				body: newNote.body,
+				// section: null,
+			})
+			.then((response) => {
+				dispatch({
+					type: CREATE_NOTE_SUCCESS,
+					payload: response.data.data,
+				});
+			})
+			.catch((error) => {
+				dispatch({
+					type: CREATE_NOTE_ERROR,
+					payload: error.message,
+				});
+			});
+	};
+};
+
+export const createNoteWithSession =
+	(sessionId) => async (dispatch, getState) => {
+		const {
+			sessions: { session },
+		} = getState();
+
+		const note = session.notes[session.notes.length - 1];
+		axiosInstance
+			.post("notes", {
+				title: note.title,
+				body: confirmParse(note.body),
+				section_id: sessionId,
+			})
+			.then((response) => {
+				console.log(response.data);
+				dispatch({
+					type: ADD_NOTE_SUCCESS,
+					payload: response.data.data,
+				});
+			})
+			.catch((error) => {
+				dispatch({
+					type: ADD_NOTE_ERROR,
+					payload: error.message,
+				});
+			});
+	};
 
 export const addNoteToSession = (sessionId) => {
 	return (dispatch) => {
@@ -85,22 +153,6 @@ export const deleteNote = (id) => {
 			});
 		});
 	};
-};
-
-export const createSession = (sessionData) => (dispatch) => {
-	dispatch(loadRequest());
-	axiosInstance
-		.post(`sections`, sessionData)
-		.then((response) => {
-			const { data } = response;
-			dispatch({
-				type: CREATE_SESSION_SUCCESS,
-				payload: data,
-			});
-		})
-		.catch((error) => {
-			console.log(error);
-		});
 };
 
 export const getSessions = () => (dispatch) => {};
@@ -161,24 +213,21 @@ export const editNote = (id, value, property) => {
 	};
 };
 
-export const updateNote = (sessionId, noteId) => {
+export const updateNote = (noteId, sessionId = "") => {
 	return (dispatch, getState) => {
 		console.log({ sessionId, noteId });
 		dispatch(loadRequest());
 		const {
 			sessions: { session },
 		} = getState();
-		const targetNote = session.notes.filter(
-			(note) =>
-				note.id === noteId && note.section_id === parseInt(sessionId)
-		);
+		const targetNote = session.notes.filter((note) => note.id === noteId);
 		console.log(targetNote);
 
 		axiosInstance
 			.put(`notes/${noteId}`, {
 				title: targetNote[0].title,
-				body: JSON.parse(targetNote[0].body),
-				section_id: sessionId,
+				body: confirmParse(targetNote[0].body),
+				section_id: sessionId ? parseInt(sessionId) : null,
 			})
 			.then((response) => {
 				dispatch({

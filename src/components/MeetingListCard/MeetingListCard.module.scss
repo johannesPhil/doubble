@@ -2,7 +2,7 @@
 
 .template {
 	display: grid;
-	gap: 2rem;
+	gap: 0rem;
 }
 
 .name {
@@ -24,7 +24,7 @@
 	bottom: 0;
 	left: 0;
 	display: flex;
-	align-items: center;
+
 	justify-content: center;
 	content: "";
 	background-color: rgba($color-text-dark-2, 0);
@@ -33,10 +33,11 @@
 }
 .cta {
 	position: absolute;
+	bottom: 15%;
 	padding: 0.5rem 1.2rem;
 	background-color: $color-white;
 	color: $color-brand;
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	opacity: 0;
 	transition: all 500ms;
 	border-radius: 0.4rem;

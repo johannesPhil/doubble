@@ -40,17 +40,23 @@ const SessionSide = () => {
 		<div className="session__side">
 			<div className="session__tabs">
 				<span
-					className="session__tab"
+					className={`session__tab ${
+						sessionTab === "note" ? "session__tab--active" : ""
+					}`}
 					onClick={() => setSessionTab("note")}>
 					Private Note
 				</span>
 				<span
-					className="session__tab"
+					className={`session__tab ${
+						sessionTab === "comments" ? "session__tab--active" : ""
+					}`}
 					onClick={() => setSessionTab("comments")}>
 					Comments
 				</span>
 				<span
-					className="session__tab"
+					className={`session__tab ${
+						sessionTab === "okr" ? "session__tab--active" : ""
+					}`}
 					onClick={() => setSessionTab("okr")}>
 					OKRs
 				</span>

@@ -67,6 +67,7 @@ export const defaultBlocks = {
 };
 
 export const editorConfig = {
+	placeholder: "Get started here",
 	tools: {
 		header: {
 			class: Header,

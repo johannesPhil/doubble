@@ -12,9 +12,23 @@ function sessionsReducer(state = initialState, { type, payload }) {
 	switch (type) {
 		case actions.CREATE_SESSION_SUCCESS:
 			const newlyCreatedSession = { ...state.session, id: payload };
+
+			// const linkedNotes = state.session.notes.map((note) =>
+			// 	note.section_id == null
+			// 		? { ...note, section_id: payload }
+			// 		: note
+			// );
+
+			// const newlyCreatedSession = {
+			// 	...state.session,
+			// 	id: payload,
+			// 	notes: linkedNotes,
+			// };
+
 			return {
 				...state,
 				session: newlyCreatedSession,
+				newNote: false,
 				loading: generalReducers(
 					state.loading,
 					actions.REQUEST_SUCCESS
@@ -75,8 +89,32 @@ function sessionsReducer(state = initialState, { type, payload }) {
 				session: { ...state.session, title: payload },
 			};
 
+		case actions.UPDATE_SESSION_SUCCESS:
+			return { ...state };
+
 		case actions.RESET_SESSION:
 			return initialState;
+
+		case actions.CREATE_NOTE_SUCCESS:
+			console.log(payload);
+			const newlyCreatedNote = state.session.notes.map((note) => {
+				if (note.id == undefined) {
+					return {
+						...note,
+						id: payload.id,
+						ceated_at: payload.created_at,
+						updated_at: payload.updated_at,
+						section_id: payload.section_id,
+						title: payload.title,
+						body: payload.body,
+					};
+				}
+			});
+			const emptySession = {
+				...state.session,
+				notes: newlyCreatedNote,
+			};
+			return { ...state, session: emptySession };
 
 		case actions.ADD_NOTE_SUCCESS:
 			const newNote = payload;
@@ -119,10 +157,7 @@ function sessionsReducer(state = initialState, { type, payload }) {
 				if (note.id === id) {
 					return {
 						...note,
-						title: data.title,
-						body: data.body,
-						created_at: data.created_at,
-						updated_at: data.updated_at,
+						...data,
 					};
 				}
 				return note;
@@ -163,6 +198,7 @@ function sessionsReducer(state = initialState, { type, payload }) {
 				notes: [...state.session.notes, emptyNote],
 			};
 			return { ...state, session: newSession, newNote: { status: true } };
+
 		case actions.CANCEL_START_NEW_NOTE:
 			let originalNotes = state.session.notes.filter((note) => note.id);
 			const originalSession = { ...state.session, notes: originalNotes };
@@ -172,19 +208,23 @@ function sessionsReducer(state = initialState, { type, payload }) {
 		case actions.EDIT_NEW_NOTE:
 			const { property: newProperty, value: newValue } = payload;
 			const { notes } = state.session;
-			const lastNote = notes[notes.length - 1];
 			let updatedLastNote;
-			updatedLastNote = {
-				...lastNote,
-				[newProperty]:
-					newProperty === "body"
-						? JSON.stringify(newValue)
-						: newValue,
-			};
-			const updatedNotes = [...notes.slice(0, -1), updatedLastNote];
+			updatedLastNote = notes.map((note, index) => {
+				if (!note.id) {
+					return {
+						...note,
+						[newProperty]:
+							newProperty === "body"
+								? JSON.stringify(newValue)
+								: newValue,
+					};
+				}
+				return note;
+			});
+			// const updatedNotes = [...notes.slice(0, -1), updatedLastNote];
 			const latestSession = {
 				...state.session,
-				notes: updatedNotes,
+				notes: updatedLastNote,
 			};
 			return { ...state, session: latestSession };
 

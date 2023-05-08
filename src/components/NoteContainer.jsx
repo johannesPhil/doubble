@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import NoteEditor from "./Editor/NoteEditor";
 import NoteTemplateList from "./Sessions/NoteTemplateList/NoteTemplateList";
 import NoteOptionsModal from "./NoteOptionsModal";
@@ -6,57 +6,102 @@ import ShareModal from "./ShareModal";
 import { useCloseModals } from "../utils/closeModals";
 import {
 	createNoteWithSession,
+	createNoteWithoutSession,
 	editNote,
 	getSessionById,
+	newNoteToggle,
 	updateNote,
 } from "../Redux/actions/sessionActions";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PlaceHolderElement from "./PlaceHolders/PlaceHolderElement";
 import PlaceHolderBlock from "./PlaceHolders/PlaceHolderBlock";
+import { throttleRequest, debounceRequest } from "../utils/callLimit";
 
-const NoteContainer = ({ expand, setExpand, note: propsNote }) => {
+const NoteContainer = ({
+	expand,
+	setExpand,
+	noteToExpand,
+	setNoteToExpand,
+	note: propsNote,
+}) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const [share, setShare] = useState(false);
 	const [options, setOptions] = useState(false);
-	const { modalRef } = useCloseModals(setExpand);
-	const { id: sessionId } = useParams();
-	const { newNote } = useSelector((state) => state.sessions);
-	const [note, setNote] = useState({ title: "", content: "" });
-	const {
-		session: { notes },
-	} = useSelector((state) => state.sessions);
 
-	function sendNote() {
-		dispatch(createSessionWithNote(session, note));
-	}
+	const { id: sessionId } = useParams();
+	const { newNote, session } = useSelector((state) => state.sessions);
+	const [noteTitle, setNoteTitle] = useState("");
+
+	const { modalRef } = useCloseModals(setExpand);
+
+	const updateNoteTitle = useCallback((sessionId, noteId) => {
+		dispatch(updateNote(noteId, sessionId));
+	}, []);
+
+	const createNote = useCallback((sessionId) => {
+		const note = { title: propsNote.title, body: null };
+
+		if (sessionId) {
+			dispatch(createNoteWithSession(sessionId));
+		} else {
+			dispatch(createNoteWithoutSession(note));
+		}
+	}, []);
+
+	const debounceTitleUpdate = useMemo(() => {
+		return debounceRequest(updateNoteTitle, 3000);
+	}, [updateNoteTitle]);
+
+	const debounceNoteCreation = useMemo(() => {
+		return debounceRequest(createNote, 3000);
+	}, [createNote]);
 
 	function handleNoteTitle(id) {
 		return (event) => {
 			const { name, value } = event.target;
+			setNoteTitle(value);
+			console.log(value);
 			dispatch(editNote(id, value, "title"));
+			if (id) {
+				debounceTitleUpdate(sessionId, id);
+			} else {
+				debounceNoteCreation(sessionId);
+			}
 		};
 	}
 
-	function handleNoteRequest(noteId) {
-		if (sessionId) {
-			if (noteId === undefined) {
-				const note = notes.filter((note) => note.id === undefined);
-
-				dispatch(createNoteWithSession(note[0], sessionId));
-			} else {
-				dispatch(updateNote(sessionId, noteId));
-			}
+	function prepareOptions(id) {
+		if (!options) {
+			setNoteToExpand(id);
 		}
-		// dispatch(updateNote(sessionId, noteId));
+		setOptions(!options);
 	}
 
-	useEffect(() => {}, [newNote, propsNote, dispatch]);
+	useEffect(() => {
+		if (session.id && !sessionId && !propsNote.section_id) {
+			console.log("Update");
+			dispatch(updateNote(propsNote.id, session.id));
+
+			let dynamicRoute = location.pathname;
+			if (dynamicRoute.endsWith("/")) {
+				dynamicRoute = dynamicRoute.slice(0, -1);
+			}
+			console.log("Navigation");
+			navigate(`${dynamicRoute}/${session.id}`);
+		}
+	}, [dispatch, session]);
 
 	return (
 		<div
-			className={`session__note ${expand ? "session__note--expand" : ""}`}
-			ref={expand ? modalRef : null}>
+			className={`session__note ${
+				propsNote.id === noteToExpand && expand
+					? "session__note--expand"
+					: ""
+			}`}
+			ref={propsNote.id === noteToExpand && expand ? modalRef : null}>
 			<div className="session__itinerary">
 				<div className="session__itinerary-meeting">
 					<input
@@ -140,21 +185,21 @@ const NoteContainer = ({ expand, setExpand, note: propsNote }) => {
 					<button
 						type="button"
 						className="session__send"
-						onClick={() => handleNoteRequest(propsNote.id)}>
-						{propsNote.id ? "Update Note" : "Add Note"}
+						onClick={() => handleNoteRequest(propsNote?.id)}>
+						Send Note
 					</button>
 					<img
 						src="/images/ellipsis.svg"
 						alt=""
 						className="session__options"
-						onClick={() => setOptions(!options)}
+						onClick={() => prepareOptions(propsNote?.id)}
 					/>
 					{options ? (
 						<NoteOptionsModal
 							toggleVisibility={setOptions}
 							expand={expand}
 							setExpand={setExpand}
-							id={propsNote.id}
+							id={propsNote?.id}
 						/>
 					) : null}
 					{share ? <ShareModal toggleVisibility={setShare} /> : null}
@@ -166,8 +211,8 @@ const NoteContainer = ({ expand, setExpand, note: propsNote }) => {
 				}`}>
 				<NoteEditor
 					expand={expand}
-					data={propsNote.body}
-					id={propsNote.id}
+					data={propsNote?.body}
+					id={propsNote?.id}
 				/>
 
 				{/* <NoteTemplateList /> */}

@@ -1,5 +1,11 @@
 // import { Header } from "@editorjs/header";
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+	useMemo,
+} from "react";
 
 import EditorJS from "@editorjs/editorjs";
 import Header from "@editorjs/header";
@@ -9,77 +15,93 @@ import LinkTool from "@editorjs/link";
 import List from "@editorjs/list";
 import SimpleImage from "@editorjs/simple-image";
 import { useParams } from "react-router-dom";
-import { defaultBlocks } from "../../utils/editor";
+import { defaultBlocks, editorConfig } from "../../utils/editor";
 import { useDispatch } from "react-redux";
-import { editNote } from "../../Redux/actions/sessionActions";
+import {
+	createNoteWithoutSession,
+	editNote,
+	updateNote,
+} from "../../Redux/actions/sessionActions";
+import { debounceRequest } from "../../utils/callLimit";
 
 function NoteEditor({ data, id: noteId }) {
 	const editorRef = useRef(null);
 	const editorContent = data ? JSON.parse(data) : null;
 	const { id: sessionId } = useParams();
-
 	const dispatch = useDispatch();
+	const editorInstance = useRef();
 
-	const editorConfig = {
-		holder: `note${noteId ? noteId : "-new"}`,
-		placeholder: "Get started here",
-		tools: {
-			header: {
-				class: Header,
-				inlineToolbar: true,
-				config: {
-					placeholder: "Enter a heading",
-					levels: [1, 2, 3, 4, 5, 6],
-					defaultLevel: 2,
-				},
-			},
-			link: {
-				class: LinkTool,
-				inlineToolbar: true,
-				config: {
-					placeholder: "Paste a URL link",
-				},
-			},
-			checklist: {
-				class: Checklist,
-				inlineToolbar: true,
-				config: { placeholder: "Add Task" },
-			},
-			list: {
-				class: List,
-				inlineToolbar: true,
-			},
-			table: {
-				class: Table,
-				inlineToolbar: true,
-			},
-		},
-		data: editorContent ? editorContent : defaultBlocks,
-		onChange: async () => {
-			const editorContent = await editorRef.current.save();
-			dispatch(editNote(noteId, editorContent, "body"));
-		},
-	};
+	const createNoteWithTitle = useCallback(() => {
+		dispatch(createNoteWithoutSession());
+	}, []);
+
+	const updateNoteBody = useCallback(() => {
+		dispatch(updateNote(noteId, sessionId));
+	}, []);
+
+	const debounceNoteCreation = useMemo(
+		() => debounceRequest(createNoteWithTitle, 3000),
+		[createNoteWithTitle]
+	);
+
+	const debounceNoteUpdate = useMemo(
+		() => debounceRequest(updateNoteBody, 3000),
+		[updateNoteBody]
+	);
+
+	// const editorConfig = {
+	// 	holder: `note-${noteId ? noteId : "new"}`,
+	// 	placeholder: editorConfig.placeholder,
+	// 	tools: editorConfig.tools,
+	// 	data: editorContent ? editorContent : defaultBlocks,
+	// };
 
 	function instantiateEditor() {
-		editorRef.current = new EditorJS({
-			...editorConfig,
+		const editor = new EditorJS({
+			holder: `note-${noteId ? noteId : "new"}`,
+			placeholder: editorConfig.placeholder,
+			tools: editorConfig.tools,
+			data: editorContent ? editorContent : defaultBlocks,
+			onReady: () => {
+				editorInstance.current = editor;
+			},
+			onChange: async () => {
+				const editorContent = await editor.save();
+				console.log(editorContent);
+				dispatch(editNote(noteId, editorContent, "body"));
+
+				if (noteId) {
+					debounceNoteUpdate();
+				} else {
+					debounceNoteCreation();
+				}
+			},
 			logLevel: "WARN",
 		});
 	}
 
 	useEffect(() => {
-		instantiateEditor();
+		// const editor = new EditorJS({
+		// 	...editorConfig,
+		// 	logLevel: "WARN",
+		// });
+
+		// editor.isReady.catch((reason) => {
+		// 	console.log(`Editor initialization failed. ${reason}`);
+		// });
+		if (!editorInstance.current) {
+			instantiateEditor();
+		}
+
 		return () => {
-			if (editorRef.current) {
-				editorRef.current.destroy();
-			}
+			editorInstance?.current?.destroy();
+			editorInstance.current = null;
 		};
 	}, []);
 
-	useEffect(() => {}, [dispatch, editorContent, noteId]);
+	useEffect(() => {}, [dispatch, editorContent, noteId, editorRef]);
 
-	return <div id={`note${noteId ? noteId : "-new"}`}></div>;
+	return <div id={`note-${noteId ? noteId : "new"}`}></div>;
 }
 
 export default NoteEditor;
