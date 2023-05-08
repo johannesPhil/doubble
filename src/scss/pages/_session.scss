@@ -27,9 +27,21 @@
 		all: unset;
 		position: relative;
 		font-size: 2rem;
+		font-family: "AvertaStd-SemiBold";
 
 		&::placeholder {
 			color: rgba($color-text-dark-2, 0.8);
+		}
+	}
+
+	&__desc {
+		all: unset;
+		font-size: 1.3rem;
+		font-weight: bolder;
+
+		&::placeholder {
+			color: rgba($color-text-dark-2, 0.8);
+			font-weight: bolder;
 		}
 	}
 
@@ -50,13 +62,10 @@
 
 	&__link-input {
 		all: unset;
-		font-size: 1.2rem;
+		// font-size: 1.rem;
+		// font-weight: bold;
+		color: rgba($color-text-dark-1, 0.9);
 		background-color: transparent;
-	}
-
-	&__desc {
-		all: unset;
-		font-size: 1.2rem;
 	}
 
 	&__content {
@@ -80,6 +89,10 @@
 		display: grid;
 		gap: 3.2rem;
 		grid-auto-rows: min-content;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 
 	&__note {
@@ -89,7 +102,7 @@
 		box-shadow: 0px 8px 24px -6px rgba(0, 0, 0, 0.16),
 			0px 0px 1px rgba(0, 0, 0, 0.4);
 		border-radius: 8px;
-		padding: 2rem 1rem;
+		padding: 2rem;
 		background-color: $color-white;
 		transition: all 200ms;
 
@@ -106,10 +119,11 @@
 	}
 
 	&__itinerary {
-		display: flex;
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: 1fr auto;
 		align-items: center;
-		padding-bottom: 0.8rem;
+		gap: 1rem;
+		padding-bottom: 2rem;
 		border-bottom: solid 1px $color-gray-3;
 
 		&-meeting {
@@ -171,7 +185,6 @@
 		background-color: rgba($color-brand, 0.12);
 		border-radius: 1.2rem;
 		font-size: 1.2rem;
-		font-family: "AvertaStd-SemiBold";
 	}
 
 	&__tab {
@@ -179,6 +192,10 @@
 		text-align: center;
 		cursor: pointer;
 		z-index: 1;
+
+		&--active {
+			font-family: "AvertaStd-SemiBold";
+		}
 	}
 
 	&__switch {
@@ -254,13 +271,21 @@
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
-	font-size: 1.2rem;
+	font-size: 1.6rem;
+	font-weight: bold;
+
+	&::placeholder {
+		color: $color-text-dark-1;
+	}
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 .note-template {
 	height: 40vh;
-	display: grid;
-	grid-template-columns: 4fr 1fr;
+
 	gap: 1rem;
 
 	&__expanded {
@@ -272,6 +297,11 @@
 		display: grid;
 		gap: 2rem;
 		grid-auto-rows: min-content;
+	}
+
+	&__static {
+		display: grid;
+		grid-template-columns: 5fr 2fr;
 	}
 }
 
@@ -292,7 +322,7 @@
 	box-shadow: 0px 12px 12px -6px rgba(0, 0, 0, 0.16),
 		0px 0px 1px rgba(0, 0, 0, 0.4);
 
-	z-index: 3;
+	z-index: 1;
 
 	&__color,
 	&__new,

@@ -1,5 +1,11 @@
 import React from "react";
 import { NavLink, useMatch } from "react-router-dom";
+import HomeIcon from "./SVGIcons/HomeIcon";
+import ClipBoardTextIcon from "./SVGIcons/ClipBoardTextIcon";
+import CalendarIcon from "./SVGIcons/CalendarIcon";
+import FileIcon from "./SVGIcons/FileIcon";
+import MessageIcon from "./SVGIcons/MessageIcon";
+import PinIcon from "./SVGIcons/PinIcon";
 
 const SideNav = () => {
 	const isMatch = useMatch("/app");
@@ -8,13 +14,11 @@ const SideNav = () => {
 			<nav className="side__navigation">
 				<NavLink
 					to="/app"
-					className={`${
-						isMatch
-							? "side__link side__link--active "
-							: "side__link--pending"
-					} side__link
+					className={`side__link ${
+						isMatch ? "side__link--active " : "side__link--pending"
+					}
 					`}>
-					<span className="side__icon side__icon--home"></span>
+					<HomeIcon color={isMatch ? "white" : "black"} />
 					<span className="side__test">Welcome</span>
 				</NavLink>
 				<NavLink
@@ -26,20 +30,30 @@ const SideNav = () => {
 							? " side__link--pending"
 							: " side__link";
 					}}>
-					<span className="side__icon side__icon--action-items"></span>
-					<span className="side__test">Action Items</span>
+					{({ isActive }) => (
+						<>
+							<ClipBoardTextIcon
+								color={isActive ? "white" : "black"}
+							/>
+							<span className="side__test">Action Items</span>
+						</>
+					)}
 				</NavLink>
 				<NavLink
 					to="meetings"
-					className={({ isActive, isPending }) => {
+					className={({ isActive }) => {
 						return isActive
 							? "side__link side__link--active"
-							: isPending
-							? " side__link--pending"
 							: " side__link";
 					}}>
-					<span className="side__icon side__icon--meetings"></span>
-					<span className="side__test">Meetings</span>
+					{({ isActive }) => (
+						<>
+							<CalendarIcon
+								color={isActive ? "white" : "black"}
+							/>
+							<span className="side__test">Meetings</span>
+						</>
+					)}
 				</NavLink>
 				<NavLink
 					to="sessions"
@@ -50,8 +64,12 @@ const SideNav = () => {
 							? " side__link--pending"
 							: " side__link";
 					}}>
-					<span className="side__icon side__icon--session"></span>
-					<span className="side__test">Sessions</span>
+					{({ isActive }) => (
+						<>
+							<FileIcon color={isActive ? "white" : "black"} />
+							<span className="side__test">Sessions</span>
+						</>
+					)}
 				</NavLink>
 				<NavLink
 					to="shared"
@@ -62,14 +80,22 @@ const SideNav = () => {
 							? " side__link--pending"
 							: " side__link";
 					}}>
-					<span className="side__icon side__icon--shared"></span>
-					<span className="side__test">Shared with me</span>
+					{({ isActive }) => (
+						<>
+							<MessageIcon color={isActive ? "white" : "black"} />
+							<span className="side__test">Shared with me</span>
+						</>
+					)}
 				</NavLink>
 				<NavLink
-					to=""
+					to="shared"
 					className="side__link">
-					<span className="side__icon side__icon--archives"></span>
-					<span className="side__test">Archives</span>
+					{({ isActive }) => (
+						<>
+							<PinIcon color={isActive ? "white" : "black"} />
+							<span className="side__test">Archives</span>
+						</>
+					)}
 				</NavLink>
 				<NavLink
 					to="community"
@@ -80,10 +106,12 @@ const SideNav = () => {
 							? " side__link--pending"
 							: " side__link";
 					}}>
-					<span className="side__icon side__icon--community">
-						Community
-					</span>
-					<span className="side__test"></span>
+					{({ isActive }) => (
+						<>
+							<PinIcon color={isActive ? "white" : "black"} />
+							<span className="side__test">Community</span>
+						</>
+					)}
 				</NavLink>
 			</nav>
 

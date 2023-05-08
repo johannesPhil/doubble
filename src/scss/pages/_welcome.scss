@@ -13,6 +13,10 @@
 		display: grid;
 		grid-auto-rows: min-content;
 		gap: 3rem;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 
 	&__heading {
@@ -39,7 +43,7 @@
 
 .template {
 	display: grid;
-	gap: 2rem;
+	gap: 1rem;
 	cursor: pointer;
 
 	&__card {

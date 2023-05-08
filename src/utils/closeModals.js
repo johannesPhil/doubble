@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 
 export const useCloseModals = (toggleVisibility) => {
 	const modalRef = useRef(null);
-	// const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
 		const handleOutsideClick = (event) => {

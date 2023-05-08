@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import NoteEditor from "./Editor/NoteEditor";
 import NoteTemplateList from "./Sessions/NoteTemplateList/NoteTemplateList";
 import NoteOptionsModal from "./NoteOptionsModal";
@@ -6,12 +6,16 @@ import ShareModal from "./ShareModal";
 import { useCloseModals } from "../utils/closeModals";
 import {
 	createSessionWithNote,
+	createNoteWithoutSession,
 	editNote,
 	newNoteToggle,
+	updateNote,
 } from "../Redux/actions/sessionActions";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {} from "../Redux/actions/sessionActions";
+import { useCursorTracking } from "../utils/hooks/cursorTracking";
+import { debounceRequest } from "../utils/callLimit";
 
 const EmptyNoteContainer = ({ expand, setExpand }) => {
 	const navigate = useNavigate();
@@ -23,39 +27,47 @@ const EmptyNoteContainer = ({ expand, setExpand }) => {
 
 	const { modalRef } = useCloseModals(setExpand);
 
-	const { session } = useSelector((state) => state.sessions);
+	const {
+		session: { id: sessionId, notes },
+	} = useSelector((state) => state.sessions);
+
+	const [cursorPosition, handleCursorPosition] = useCursorTracking(0);
 
 	const [note, setNote] = useState({
 		title: "",
 	});
-	function handleNoteTitle(event) {
-		const { name, value } = event.target;
-		dispatch(editNote(undefined, value, "title"));
+
+	const createNote = useCallback(() => {
+		dispatch(createNoteWithoutSession());
+	}, []);
+
+	const debounceNoteCreation = useMemo(() => {
+		return debounceRequest(createNote, 3000);
+	}, [createNote]);
+
+	const updateNewNote = useCallback((noteId) => {
+		dispatch(updateNote(noteId));
+	}, []);
+
+	const debounceUpdateNewNote = useMemo(() => {
+		return debounceRequest(updateNewNote, 3000);
+	}, [updateNewNote]);
+
+	function handleNoteTitle(id) {
+		return (event) => {
+			const { value } = event.target;
+			dispatch(editNote(id, value, "title"));
+			if (id) {
+				debounceUpdateNewNote(id);
+			} else {
+				debounceNoteCreation();
+			}
+		};
 	}
 
 	function addNote() {
 		dispatch(createSessionWithNote());
 	}
-
-	useEffect(() => {
-		dispatch(newNoteToggle());
-	}, [dispatch]);
-
-	useEffect(() => {
-		if (session.notes.length) {
-			setNote((prevState) => ({
-				...prevState,
-				title: session.notes[0].title,
-			}));
-		}
-
-		if (session.id) {
-			navigate(`${location.pathname}/${session.id}`);
-		}
-
-		return () => {};
-	}, [session]);
-
 	return (
 		<div
 			className={`session__note ${expand ? "session__note--expand" : ""}`}
@@ -66,10 +78,10 @@ const EmptyNoteContainer = ({ expand, setExpand }) => {
 						type="text"
 						name="noteTitle"
 						id="noteTitle"
-						value={note.title}
+						value={notes[notes.length - 1]?.title}
 						className="session__link-input"
 						placeholder="Note title..."
-						onChange={handleNoteTitle}
+						onChange={handleNoteTitle(notes[notes.length - 1]?.id)}
 					/>
 				</div>
 				<div className="session__actions">
@@ -105,7 +117,7 @@ const EmptyNoteContainer = ({ expand, setExpand }) => {
 						type="button"
 						className="session__send"
 						onClick={addNote}>
-						Add Note
+						Send Note
 					</button>
 					<img
 						src="/images/ellipsis.svg"
@@ -124,7 +136,7 @@ const EmptyNoteContainer = ({ expand, setExpand }) => {
 				</div>
 			</div>
 			<div
-				className={`note-template ${
+				className={`note-template note-template__static ${
 					expand ? "note-template__expanded" : ""
 				}`}>
 				<NoteEditor expand={expand} />

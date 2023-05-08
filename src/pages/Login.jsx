@@ -54,12 +54,18 @@ export const Login = (props) => {
 						/>
 						<span>Login with Google</span>
 					</AuthButton>
-					{/* <AuthButton
-						target={"microsoft"}
-				
-					/> */}
-					<p className="">
-						No account? <span>Create one</span>
+					<AuthButton target={"microsoft"}>
+						<img
+							src={`/images/microsoft.png`}
+							alt=""
+						/>
+						<span>Login With MicroSoft</span>
+					</AuthButton>
+					<p className="auth__links">
+						By continuing, you agree to the{" "}
+						<span className="auth__link">Terms of use</span>, and{" "}
+						<span className="auth__link">Privacy Policy</span> of
+						doubble.
 					</p>
 				</div>
 			</div>
