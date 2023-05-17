@@ -1,4 +1,5 @@
 import { defaultBlocks } from "../../utils/editor";
+import { confirmParse } from "../../utils/editorBodyParser";
 import * as actions from "../actions/types";
 import generalReducers from "./generalReducers";
 
@@ -215,7 +216,7 @@ function sessionsReducer(state = initialState, { type, payload }) {
 						...note,
 						[newProperty]:
 							newProperty === "body"
-								? JSON.stringify(newValue)
+								? confirmParse(newValue)
 								: newValue,
 					};
 				}
