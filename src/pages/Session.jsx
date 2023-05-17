@@ -112,10 +112,9 @@ const Session = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		function handleScroll() {}
-
-		return () => {};
-	}, []);
+		// function handleScroll() {}
+		// return () => {};
+	}, [loadedSession.notes]);
 
 	return (
 		<div className={`session ${expand ? "session__expand" : ""} `}>

@@ -54,6 +54,7 @@ const EmptyNoteContainer = ({ expand, setExpand }) => {
 	}, [updateNewNote]);
 
 	function handleNoteTitle(id) {
+		console.log(id);
 		return (event) => {
 			const { value } = event.target;
 			dispatch(editNote(id, value, "title"));
@@ -68,6 +69,10 @@ const EmptyNoteContainer = ({ expand, setExpand }) => {
 	function addNote() {
 		dispatch(createSessionWithNote());
 	}
+	useEffect(() => {
+		return () => {};
+	}, [notes[0]]);
+
 	return (
 		<div
 			className={`session__note ${expand ? "session__note--expand" : ""}`}
