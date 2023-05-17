@@ -25,7 +25,6 @@ import {
 import { debounceRequest } from "../../utils/callLimit";
 
 function NoteEditor({ data, id: noteId }) {
-	const editorRef = useRef(null);
 	const editorContent = data ? JSON.parse(data) : null;
 	const { id: sessionId } = useParams();
 	const dispatch = useDispatch();
@@ -49,13 +48,6 @@ function NoteEditor({ data, id: noteId }) {
 		[updateNoteBody]
 	);
 
-	// const editorConfig = {
-	// 	holder: `note-${noteId ? noteId : "new"}`,
-	// 	placeholder: editorConfig.placeholder,
-	// 	tools: editorConfig.tools,
-	// 	data: editorContent ? editorContent : defaultBlocks,
-	// };
-
 	function instantiateEditor() {
 		const editor = new EditorJS({
 			holder: `note-${noteId ? noteId : "new"}`,
@@ -65,15 +57,27 @@ function NoteEditor({ data, id: noteId }) {
 			onReady: () => {
 				editorInstance.current = editor;
 			},
-			onChange: async () => {
-				const editorContent = await editor.save();
-				console.log(editorContent);
-				dispatch(editNote(noteId, editorContent, "body"));
+			onChange: async (editor) => {
+				if (editor) {
+					editor.saver.save().then((content) => {
+						console.log(content);
+						dispatch(editNote(noteId, content, "body"));
 
-				if (noteId) {
-					debounceNoteUpdate();
-				} else {
-					debounceNoteCreation();
+						if (noteId) {
+							debounceNoteUpdate();
+						} else {
+							debounceNoteCreation();
+						}
+					});
+					// const editorContent = await editor.saver.save();
+					// console.log(editorContent);
+					// dispatch(editNote(noteId, editorContent, "body"));
+
+					// if (noteId) {
+					// 	debounceNoteUpdate();
+					// } else {
+					// 	debounceNoteCreation();
+					// }
 				}
 			},
 			logLevel: "WARN",
@@ -81,14 +85,6 @@ function NoteEditor({ data, id: noteId }) {
 	}
 
 	useEffect(() => {
-		// const editor = new EditorJS({
-		// 	...editorConfig,
-		// 	logLevel: "WARN",
-		// });
-
-		// editor.isReady.catch((reason) => {
-		// 	console.log(`Editor initialization failed. ${reason}`);
-		// });
 		if (!editorInstance.current) {
 			instantiateEditor();
 		}
@@ -99,9 +95,13 @@ function NoteEditor({ data, id: noteId }) {
 		};
 	}, []);
 
-	useEffect(() => {}, [dispatch, editorContent, noteId, editorRef]);
+	useEffect(() => {}, [dispatch, editorContent, noteId]);
 
-	return <div id={`note-${noteId ? noteId : "new"}`}></div>;
+	return (
+		<div
+			id={`note-${noteId ? noteId : "new"}`}
+			data-testid={`note-${noteId ? noteId : "new"}`}></div>
+	);
 }
 
 export default NoteEditor;
