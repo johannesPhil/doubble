@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import "../scss/abstracts/_variables.scss";
 import { useCloseModals } from "../utils/closeModals";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../Redux/actions/userActions";
+import { initialsImage } from "../utils/imageFromInitials";
 
 const Modal = styled.div({
 	position: "absolute",
@@ -50,12 +53,14 @@ const Button = styled.button({
 
 const UsersContainer = styled.div({
 	maxHeight: "20rem",
+	// display: "grid",
+	// gap: "1rem",
 	overflowY: "auto",
 });
 
 const User = styled.div({
-	display: "flex",
-	gap: "1rem",
+	// display: "flex",
+	// gap: "1rem",
 	alignItems: "center",
 });
 
@@ -78,6 +83,20 @@ const Email = styled.div({
 
 const ShareModal = ({ toggleVisibility }) => {
 	const { modalRef } = useCloseModals(toggleVisibility);
+	const [users, setUsers] = useState([]);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(getUsers())
+			.then((data) => {
+				console.log(data);
+				setUsers(data.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, [dispatch]);
+
 	return (
 		<Modal ref={modalRef}>
 			<InputDiv border="$color-dark-1">
@@ -85,16 +104,24 @@ const ShareModal = ({ toggleVisibility }) => {
 				<Button bg="$color-brand">Invite</Button>
 			</InputDiv>
 			<UsersContainer>
-				<User>
-					<img
-						src="/images/Background.png"
-						alt=""
-					/>
-					<UserDetails>
-						<Name>John Peter</Name>
-						<Email>jay3pee@gmail.com</Email>
-					</UserDetails>
-				</User>
+				{users.map((user) => (
+					<User>
+						<img
+							src={
+								user.picture ||
+								initialsImage(
+									40,
+									`${user.first_name} ${user.last_name}`
+								)
+							}
+							alt=""
+						/>
+						<UserDetails>
+							<Name>{`${user.first_name} ${user.last_name}`}</Name>
+							<Email>{user.email}</Email>
+						</UserDetails>
+					</User>
+				))}
 			</UsersContainer>
 		</Modal>
 	);

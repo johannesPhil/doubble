@@ -91,8 +91,8 @@ export const createNoteWithoutSession = (note = null) => {
 
 		axiosInstance
 			.post("notes", {
-				title: newNote.title,
-				body: newNote.body,
+				title: newNote.title || "Untitled Note - Please change",
+				body: confirmParse(newNote.body),
 				// section: null,
 			})
 			.then((response) => {
