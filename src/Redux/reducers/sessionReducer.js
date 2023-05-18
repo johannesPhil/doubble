@@ -14,18 +14,6 @@ function sessionsReducer(state = initialState, { type, payload }) {
 		case actions.CREATE_SESSION_SUCCESS:
 			const newlyCreatedSession = { ...state.session, id: payload };
 
-			// const linkedNotes = state.session.notes.map((note) =>
-			// 	note.section_id == null
-			// 		? { ...note, section_id: payload }
-			// 		: note
-			// );
-
-			// const newlyCreatedSession = {
-			// 	...state.session,
-			// 	id: payload,
-			// 	notes: linkedNotes,
-			// };
-
 			return {
 				...state,
 				session: newlyCreatedSession,

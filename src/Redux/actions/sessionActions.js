@@ -244,6 +244,20 @@ export const updateNote = (noteId, sessionId = "") => {
 	};
 };
 
+export const addUserToNote = (noteId, userIDs) => {
+	const user_ids = userIDs;
+	return (dispatch) => {
+		console.log({ noteId, user_ids: userIDs });
+		dispatch(loadRequest());
+		axiosInstance
+			.post(`notes/${noteId}/add-user`, { user_ids })
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((error) => {});
+	};
+};
+
 export const resetSession = () => {
 	return (dispatch) => {
 		dispatch({
