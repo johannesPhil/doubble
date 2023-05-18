@@ -165,22 +165,22 @@ const NoteContainer = ({
 							/>
 						</button>
 						{/* <div className="share__users">
-										<img
-											src="/images/Avatar.svg"
-											alt=""
-											className="share__user"
-										/>
-										<img
-											src="/images/Avatar.svg"
-											alt=""
-											className="share__user"
-										/>
-										<img
-											src="/images/Avatar.svg"
-											alt=""
-											className="share__user"
-										/>
-									</div> */}
+							<img
+								src="/images/Avatar.svg"
+								alt=""
+								className="share__user"
+							/>
+							<img
+								src="/images/Avatar.svg"
+								alt=""
+								className="share__user"
+							/>
+							<img
+								src="/images/Avatar.svg"
+								alt=""
+								className="share__user"
+							/>
+						</div> */}
 					</div>
 					<button
 						type="button"
@@ -202,7 +202,12 @@ const NoteContainer = ({
 							id={propsNote?.id}
 						/>
 					) : null}
-					{share ? <ShareModal toggleVisibility={setShare} /> : null}
+					{share ? (
+						<ShareModal
+							toggleVisibility={setShare}
+							noteId={propsNote.id}
+						/>
+					) : null}
 				</div>
 			</div>
 			<div
