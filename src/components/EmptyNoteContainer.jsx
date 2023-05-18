@@ -100,23 +100,6 @@ const EmptyNoteContainer = ({ expand, setExpand }) => {
 								alt=""
 							/>
 						</button>
-						{/* <div className="share__users">
-										<img
-											src="/images/Avatar.svg"
-											alt=""
-											className="share__user"
-										/>
-										<img
-											src="/images/Avatar.svg"
-											alt=""
-											className="share__user"
-										/>
-										<img
-											src="/images/Avatar.svg"
-											alt=""
-											className="share__user"
-										/>
-									</div> */}
 					</div>
 					<button
 						type="button"
